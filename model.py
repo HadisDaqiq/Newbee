@@ -24,14 +24,12 @@ class User(db.Model):
     photo_url = db.Column(db.String(100), nullable=True)
 
 
-
     def __repr__(self):
         """ show info aobut human"""
         return "<user id={} fname={} lname={} email={}>Username={} password={} bio={} photo={}".format(
             self.user_id, self.fname, self.lname, self.email, 
             self.username, self.password, self.bio, self.photo_url
             )
-
 
 
 class Event(db.Model):
@@ -54,16 +52,12 @@ class Event(db.Model):
     sport_id = db.Column(db.Integer, db.ForeignKey('sport.sport_id'),
                         nullable=False) #sport is massured in what event they attend to.
 
-
-
     def __repr__(self):
         """ show info aobut human"""
         return ("<event id={} title={} description={}"
                 " location={}> startData={} endDate={}").format(
             self.event_id, self.title, self.description, 
             self.location, self.start_date, self.end_date)
-
-
 
 
 class Sport(db.Model):
@@ -76,10 +70,6 @@ class Sport(db.Model):
 
     sport_name = db.Column(db.String(50), nullable=True)
 
-    
-
-
-
 
 
 class Register(db.Model):
@@ -87,7 +77,8 @@ class Register(db.Model):
 
     __tablename__ = "register"
 
-
+    register_id = db.Column(db.Integer, primary_key=True,
+                        autoincrement=True)
     
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_idr '),
                         nullable=False)
