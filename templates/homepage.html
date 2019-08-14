@@ -10,21 +10,11 @@
     <h2>Events</h2>
 
 
-        <div class="display-flex">
-      <button class="share-box" data-control-name="share.sharebox_focus" data-ember-action="" data-ember-action-517="517">
-        <li-icon aria-hidden="true" type="compose-icon" class="mr2" size="medium"><svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="artdeco-icon" focusable="false"><path d="M17,13.75l2-2V20a1,1,0,0,1-1,1H4a1,1,0,0,1-1-1V6A1,1,0,0,1,4,5h8.25l-2,2H5V19H17V13.75Zm5-8a1,1,0,0,1-.29.74L13.15,15,7,17l2-6.15,8.55-8.55a1,1,0,0,1,1.41,0L21.71,5A1,1,0,0,1,22,5.71ZM17.93,7.58l-1.5-1.5-6.06,6.06,1.5,1.5Zm1.84-1.84-1.5-1.5L17.09,5.41l1.5,1.5Z" class="large-icon" style="fill: currentColor;"></path></svg></li-icon>
+       <button class="" id = "start-event-btn">
+        
         Start a event
       </button>
-
-        <button class="share-box__trigger" data-control-name="share.sharebox_image" data-ember-action="" data-ember-action-518="518">
-          <li-icon aria-hidden="true" type="camera-icon"><svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="artdeco-icon" focusable="false"><path d="M21,6H18L16.5,3h-9L6,6H3A1,1,0,0,0,2,7V19a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V7A1,1,0,0,0,21,6ZM7.36,8l1.5-3h6.28l1.5,3H20v2H16.58a5,5,0,0,0-9.16,0H4V8H7.36Zm7.76,4A3.13,3.13,0,1,1,12,8.88,3.13,3.13,0,0,1,15.13,12ZM4,18V11H7.1a5,5,0,1,0,9.8,0H20v7H4Z" class="large-icon" style="fill: currentColor;"></path></svg></li-icon>
-          <span class="share-media-button__a11y-text visually-hidden">
-            Upload Image
-          </span>
-        </button>
-
-<!----></div>
-
+     
 
 
 
@@ -47,8 +37,35 @@
         {%endfor%}
 
     </ul>
+    </div>
 </div>
 
+<div id = "save-event-popup" style = "display: none">
+    <div class = "popup-content">
+    title 
+    des
+    loca
+    start,end
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+    $("#start-event-btn").on('click', ()=>{
+        console.log("it is working!")
+        $("#save-event-popup").show()
+    })
+
+
+    $("#save-event-popup").on('click', ()=>{
+         $("#save-event-popup").hide()
+    })
+</script>
 
  {%endblock content%}   
 
