@@ -51,17 +51,19 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
-    return render_template("homepage.html")
+     events = Event.query.all()
+    return render_template("homepage.html", events=events)
 
 
 
 
-@app.route("/events")
-def event_list():
-    """show a list of events"""
 
-    events = Event.query.all()
-    return render_template("event.html", events=events)
+# @app.route("/events")
+# def event_list():
+#     """show a list of events"""
+
+#     # events = Event.query.all()
+#     return redirect('/')
 
 
 

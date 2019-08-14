@@ -25,7 +25,7 @@
     <ul>
         {% for event in events %}
         <li>
-            <a href='/events/{{events.event_id}}'>
+            <a href='//{{events.event_id}}'>
                 {{events[event]['title']}}
                 {{events[event]['description']}}
                 {{events[event]['location']}}
@@ -33,6 +33,7 @@
                 {{events[event]['end_date']}}
                <!--  {{events[event]['user_id']}}
                 {{events[event]['sport_id']}} -->
+                <!-- similar to ratings, user_list templete -->
 
         </li>
 
