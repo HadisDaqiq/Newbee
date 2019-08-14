@@ -20,47 +20,48 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
-fake_events = {
-    'soc':{ 
-        'title': 'pick up soccer',
-        'sport': 'soccer',
-        'level':'advanced',
-        'location': 'golden gate park',
-        'time': 'saturday 8-18-2019',
-    },
+# fake_events = {
+#     'soc':{ 
+#         'title': 'pick up soccer',
+#         'sport': 'soccer',
+#         'level':'advanced',
+#         'location': 'golden gate park',
+#         'time': 'saturday 8-18-2019',
+#     },
 
-    'tennis':{
-        'title':'pratice for tournment',
-        'sport':'Tennis',
-        'level':'Beginner',
-        'location': 'Mannie Love',
-        'time': 'saturday 10-18-2019',
-    },
+#     'tennis':{
+#         'title':'pratice for tournment',
+#         'sport':'Tennis',
+#         'level':'Beginner',
+#         'location': 'Mannie Love',
+#         'time': 'saturday 10-18-2019',
+#     },
 
-    'volly':{
-        'title': 'Fun Vollyball',
-        'sport': 'Beach Vollyball',
-        'level':'General',
-        'location': 'North Beach',
-        'time':  'saturday 10-10-2019',
-    },
-}
+#     'volly':{
+#         'title': 'Fun Vollyball',
+#         'sport': 'Beach Vollyball',
+#         'level':'General',
+#         'location': 'North Beach',
+#         'time':  'saturday 10-10-2019',
+#     },
+# }
 
 
 @app.route('/')
 def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
-    return render_template("homepage.html", fake_events = fake_events)
+    return render_template("homepage.html")
 
 
 
-# @app.route("/users")
-# def user_list():
-#     """show a list of users"""
 
-#     users = User.query.all()
-#     return render_template("user.html", users=users)
+@app.route("/events")
+def event_list():
+    """show a list of events"""
+
+    events = Event.query.all()
+    return render_template("event.html", events=events)
 
 
 
