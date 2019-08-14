@@ -51,7 +51,7 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
-     events = Event.query.all()
+    events = Event.query.all()
     return render_template("homepage.html", events=events)
 
 

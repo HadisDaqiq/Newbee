@@ -5,40 +5,47 @@
 {%endblock head%} 
 
 {%block content%}
-<!-- <div class = 'event-div'>
-    
 
-    {%for event in fake_events%}
-    <br>
-    <h3> {{fake_events[event]['title']}}</h3>
-    <h3> {{fake_events[event]['sport']}}</h3>
-    <h2> {{fake_events[event]['level']}}</h2>
-    <h2> {{fake_events[event]['location']}}</h2>
-    <h3> {{fake_events[event]['time']}}</h3>
-    <br>
 
-    {%endfor%} -->
-
-<!-- </div> -->
     <h2>Events</h2>
 
-    <ul>
+
+        <div class="display-flex">
+      <button class="share-box" data-control-name="share.sharebox_focus" data-ember-action="" data-ember-action-517="517">
+        <li-icon aria-hidden="true" type="compose-icon" class="mr2" size="medium"><svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="artdeco-icon" focusable="false"><path d="M17,13.75l2-2V20a1,1,0,0,1-1,1H4a1,1,0,0,1-1-1V6A1,1,0,0,1,4,5h8.25l-2,2H5V19H17V13.75Zm5-8a1,1,0,0,1-.29.74L13.15,15,7,17l2-6.15,8.55-8.55a1,1,0,0,1,1.41,0L21.71,5A1,1,0,0,1,22,5.71ZM17.93,7.58l-1.5-1.5-6.06,6.06,1.5,1.5Zm1.84-1.84-1.5-1.5L17.09,5.41l1.5,1.5Z" class="large-icon" style="fill: currentColor;"></path></svg></li-icon>
+        Start a event
+      </button>
+
+        <button class="share-box__trigger" data-control-name="share.sharebox_image" data-ember-action="" data-ember-action-518="518">
+          <li-icon aria-hidden="true" type="camera-icon"><svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="artdeco-icon" focusable="false"><path d="M21,6H18L16.5,3h-9L6,6H3A1,1,0,0,0,2,7V19a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V7A1,1,0,0,0,21,6ZM7.36,8l1.5-3h6.28l1.5,3H20v2H16.58a5,5,0,0,0-9.16,0H4V8H7.36Zm7.76,4A3.13,3.13,0,1,1,12,8.88,3.13,3.13,0,0,1,15.13,12ZM4,18V11H7.1a5,5,0,1,0,9.8,0H20v7H4Z" class="large-icon" style="fill: currentColor;"></path></svg></li-icon>
+          <span class="share-media-button__a11y-text visually-hidden">
+            Upload Image
+          </span>
+        </button>
+
+<!----></div>
+
+
         {% for event in events %}
-        <li>
-            <a href='//{{events.event_id}}'>
-                {{events[event]['title']}}
-                {{events[event]['description']}}
-                {{events[event]['location']}}
-                {{events[event]['start_date']}}
-                {{events[event]['end_date']}}
-               <!--  {{events[event]['user_id']}}
-                {{events[event]['sport_id']}} -->
-                <!-- similar to ratings, user_list templete -->
-
-        </li>
-
+            <a href='/{{event.event_id}}'>
+<div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="https://m.media-amazon.com/images/S/aplus-media/vc/7895a621-9359-412d-92d2-94c15adc4c70.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"> {{event.title}}</h5>
+                <p class="card-text"> Detail: {{event.description}}</p>
+            </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Location: {{event.location}}</li>
+        <li class="list-group-item">Time: {{event.start_date}} to {{event.end_date}}</li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">Join </a>
+        <a href="#" class="card-link">Another link</a>
+      </div>
+        {%endfor%}
 
     </ul>
+</div>
 
 
  {%endblock content%}   
