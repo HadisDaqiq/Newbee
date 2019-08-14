@@ -13,13 +13,10 @@ from datetime import datetime
 
 
 
-
-
-
-
-
-
-
+#takes events from db and loads it homepage.html
+def load_event():
+    """loads events from db and add it to homepage.html"""
+    print('Events')
 
 
 

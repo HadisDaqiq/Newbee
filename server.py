@@ -20,12 +20,38 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+fake_events = {
+    'soc':{ 
+        'title': 'pick up soccer',
+        'sport': 'soccer',
+        'level':'advanced',
+        'location': 'golden gate park',
+        'time': 'saturday 8-18-2019',
+    },
+
+    'tennis':{
+        'title':'pratice for tournment',
+        'sport':'Tennis',
+        'level':'Beginner',
+        'location': 'Mannie Love',
+        'time': 'saturday 10-18-2019',
+    },
+
+    'volly':{
+        'title': 'Fun Vollyball',
+        'sport': 'Beach Vollyball',
+        'level':'General',
+        'location': 'North Beach',
+        'time':  'saturday 10-10-2019',
+    },
+}
 
 
 @app.route('/')
 def index():
     """Homepage"""
-    return render_template("homepage.html")
+    print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
+    return render_template("homepage.html", fake_events = fake_events)
 
 
 
@@ -64,8 +90,6 @@ def register_form():
 #         db.session.commit()
 #         return redirect('/')
 
-
-
 @app.route('/showlog')
 def show_login_form():
     """show login form"""
@@ -88,3 +112,21 @@ def login_form():
     else:
         flash("wrong password")
         return redirect('/showlog')
+
+
+
+
+
+if __name__ == "__main__":
+    # We have to set debug=True here, since it has to be True at the
+    # point that we invoke the DebugToolbarExtension
+    app.debug = True
+    # make sure templates, etc. are not cached in debug mode
+    app.jinja_env.auto_reload = app.debug
+
+    connect_to_db(app)
+
+    # Use the DebugToolbar
+    DebugToolbarExtension(app)
+
+    app.run(port=5000, host='0.0.0.0')

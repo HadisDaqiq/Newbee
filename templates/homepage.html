@@ -1,13 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>
-        HomePage
+{% extends 'base.html' %}
+
+{%block head%}
+<title> Homepage</title>
+{%endblock head%} 
+
+{%block content%}
+<!-- <div class = 'event-div'>
+    
+
+    {%for event in fake_events%}
+    <br>
+    <h3> {{fake_events[event]['title']}}</h3>
+    <h3> {{fake_events[event]['sport']}}</h3>
+    <h2> {{fake_events[event]['level']}}</h2>
+    <h2> {{fake_events[event]['location']}}</h2>
+    <h3> {{fake_events[event]['time']}}</h3>
+    <br>
+
+    {%endfor%} -->
+
+<!-- </div> -->
+    <h2>Events</h2>
+
+    <ul>
+    {% for event in events %}
+    
+
+    </ul>
 
 
-    </title>
-</head>
-<body>
+ {%endblock content%}   
 
-</body>
-</html>

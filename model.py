@@ -9,7 +9,7 @@ db = SQLAlchemy()
 class User(db.Model):
     """user model"""
     
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     user_id = db.Column(db.Integer, primary_key=True,
                         autoincrement=True
@@ -17,7 +17,6 @@ class User(db.Model):
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(50), nullable=False)
     bio= db.Column(db.String(50), nullable=True)
 
@@ -35,7 +34,7 @@ class User(db.Model):
 class Event(db.Model):
     """event table"""
 
-    __tablename__ = "event"
+    __tablename__ = "events"
 
     
     event_id = db.Column(db.Integer, primary_key=True,
@@ -44,16 +43,17 @@ class Event(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description =db.Column(db.String(300), nullable=True)
     location = db.Column(db.String(300), nullable=True)
+    expert_level = db.Column(db.Integer, nullable=True)
     start_date = db.Column(db.String(30), nullable=False)
     end_date = db.Column(db.String(30), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'),
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
                         nullable=False)
-    sport_id = db.Column(db.Integer, db.ForeignKey('sport.sport_id'),
+    sport_id = db.Column(db.Integer, db.ForeignKey('sports.sport_id'),
                         nullable=False) #sport is massured in what event they attend to.
 
     def __repr__(self):
-        """ show info aobut human"""
+        """ show info about event"""
         return ("<event id={} title={} description={}"
                 " location={}> startData={} endDate={}").format(
             self.event_id, self.title, self.description, 
@@ -63,28 +63,38 @@ class Event(db.Model):
 class Sport(db.Model):
     """sport category table"""
 
-    __tablename__ = "sport"
+    __tablename__ = "sports"
 
     sport_id = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
 
     sport_name = db.Column(db.String(50), nullable=True)
 
-
+    def __repr__(self):
+        """ show info aobut human"""
+        return "<sport_id={} fname={} sport_name={}".format(
+            self.sport_id, self.sport_name
+            )
 
 class Register(db.Model):
     """events that you can register to"""
 
-    __tablename__ = "register"
+    __tablename__ = "registers"
 
     register_id = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
     
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_idr '),
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
                         nullable=False)
 
-    event_id = db.Column(db.Integer, db.ForeignKey('event.event_id'),
+    event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'),
                         nullable=False)
+
+    def __repr__(self):
+        """ show info aobut human"""
+        return "<register_id={}".format(
+            self.register_id
+            )
 
 #Helper functions
 
