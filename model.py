@@ -6,8 +6,8 @@ db = SQLAlchemy()
 
 
 
-class User
-"""user model"""
+class User(db.Model):
+    """user model"""
     
     __tablename__ = "user"
 
@@ -18,17 +18,19 @@ class User
     lname = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(50), nullable=False)\
-    bio = db.Column(db.String(50), nullable=True)
-   
+    password = db.Column(db.String(50), nullable=False)
+    bio= db.Column(db.String(50), nullable=True)
+
     photo_url = db.Column(db.String(100), nullable=True)
 
 
 
     def __repr__(self):
         """ show info aobut human"""
-        return "<user id={} fname={} lname={} email={}> Username={} password={} fav_sport={} photo={}".format(
-            self.user_id, self.fname self.lname, self.email, self.username, self.password self.fav_sport self.photo)
+        return "<user id={} fname={} lname={} email={}>Username={} password={} bio={} photo={}".format(
+            self.user_id, self.fname, self.lname, self.email, 
+            self.username, self.password, self.bio, self.photo_url
+            )
 
 
 
