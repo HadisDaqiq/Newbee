@@ -118,7 +118,10 @@ def login_form():
 
 
 
-
+@app.route('/event')
+def event_form():
+    """renders information from homepage, 
+    add event form ("save-event-popup") and add it to the databes"""
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

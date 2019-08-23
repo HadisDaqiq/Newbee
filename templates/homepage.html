@@ -6,17 +6,11 @@
 
 {%block content%}
 
-
     <h2>Events</h2>
 
-
-       <button class="" id = "start-event-btn">
-        
+       <button class="" id = "start-event-btn"> 
         Start a event
       </button>
-     
-
-
 
         {% for event in events %}
             <a href='/{{event.event_id}}'>
@@ -40,28 +34,57 @@
     </div>
 </div>
 
+
 <div id = "save-event-popup" style = "display: none">
     <div class = "popup-content">
-    title 
-    des
-    loca
-    start,end
+
+    
+
+    <form action= "/event" id = "prevent-form-submission-form" method= "GET">
+        Title
+        <input type= "text" name= "title">
+        <br>
+        Description
+        <input type= "text" name="des">
+        <br>
+        Location
+        <input type= "text" name="location">
+        <br>
+        Start Date - End Date
+        <input type= "text" name="start_date">
+        <input type = "text" name="end_date">
+
+        <input type="submit" name="create" value="Create">
+      
+    </form>
 
     </div>
 
 </div>
 
-
-
 <script>
 
 
+
+    //prevents the default autmatic exit at the pop up form of creating event.
+    let stalledForm = document.querySelector("#prevent-form-submission-form");
+
+    stalledForm.addEventListener("click", function (evt) {
+    //it prevents browser fro but it doesnt stop propagation
+    evt.preventDefault();
+    //it is stoping 
+    evt.stopPropagation();
+    
+    });
+
+
+    //after clicking on starting event button and making the pop up form appear.
     $("#start-event-btn").on('click', ()=>{
         console.log("it is working!")
         $("#save-event-popup").show()
     })
 
-
+    //exit out of popup once it clicks exit or outside of the form.(Gray area)
     $("#save-event-popup").on('click', ()=>{
          $("#save-event-popup").hide()
     })
