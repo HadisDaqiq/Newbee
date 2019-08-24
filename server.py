@@ -20,39 +20,14 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
-# fake_events = {
-#     'soc':{ 
-#         'title': 'pick up soccer',
-#         'sport': 'soccer',
-#         'level':'advanced',
-#         'location': 'golden gate park',
-#         'time': 'saturday 8-18-2019',
-#     },
-
-#     'tennis':{
-#         'title':'pratice for tournment',
-#         'sport':'Tennis',
-#         'level':'Beginner',
-#         'location': 'Mannie Love',
-#         'time': 'saturday 10-18-2019',
-#     },
-
-#     'volly':{
-#         'title': 'Fun Vollyball',
-#         'sport': 'Beach Vollyball',
-#         'level':'General',
-#         'location': 'North Beach',
-#         'time':  'saturday 10-10-2019',
-#     },
-# }
-
 
 @app.route('/')
 def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
     events = Event.query.all()
-    return render_template("homepage.html", events=events)
+    sports = Sport.query.all()
+    return render_template("homepage.html", events=events, sports=sports)
 
 
 
@@ -119,9 +94,34 @@ def login_form():
 
 
 @app.route('/event')
-def event_form():
+def event_process():
     """renders information from homepage, 
-    add event form ("save-event-popup") and add it to the databes"""
+    add event form ("save-event-popup") and add it to the db"""
+    print("look this time is real")
+
+    title = request.args.get("title")
+    description = request.args.get("des")
+    location = request.args.get("location")
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    user_id = 1
+    sport_id = request.args.get("sport")
+
+
+    print("\n\n\SPORT: \n\n\n",sport_id)
+
+    event = Event(title = title, description = description,
+        location = location, start_date = start_date,
+         end_date = end_date, user_id=user_id, sport_id=sport_id)
+
+    print("\n\n\nevent: \n\n\n",event)
+
+    db.session.add(event)
+    db.session.commit()
+
+
+    return redirect('/')
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

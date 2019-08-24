@@ -28,6 +28,7 @@
         <a href="#" class="card-link">Join </a>
         <a href="#" class="card-link">Another link</a>
       </div>
+
         {%endfor%}
 
     </ul>
@@ -38,9 +39,16 @@
 <div id = "save-event-popup" style = "display: none">
     <div class = "popup-content">
 
-    
+        <form action= "/event" id = "prevent-form-submission-form" 
+        method= "GET">
+        Sport
+        <select name ="sport">
+            {%for sport in sports%}
+            <option value ="{{sport.sport_id}}">{{sport.sport_name}}</option>
+            {%endfor%}
+        </select>
 
-    <form action= "/event" id = "prevent-form-submission-form" method= "GET">
+        <br>
         Title
         <input type= "text" name= "title">
         <br>
@@ -49,12 +57,16 @@
         <br>
         Location
         <input type= "text" name="location">
+    
         <br>
         Start Date - End Date
         <input type= "text" name="start_date">
         <input type = "text" name="end_date">
 
-        <input type="submit" name="create" value="Create">
+
+
+        <input type="submit" value="Create">
+
       
     </form>
 
@@ -70,9 +82,7 @@
     let stalledForm = document.querySelector("#prevent-form-submission-form");
 
     stalledForm.addEventListener("click", function (evt) {
-    //it prevents browser fro but it doesnt stop propagation
-    evt.preventDefault();
-    //it is stoping 
+    //it is stoping the event form to look for a click handler outside of its container
     evt.stopPropagation();
     
     });
@@ -86,6 +96,7 @@
 
     //exit out of popup once it clicks exit or outside of the form.(Gray area)
     $("#save-event-popup").on('click', ()=>{
+        console.log("Submit btn hit")
          $("#save-event-popup").hide()
     })
 </script>
