@@ -25,9 +25,9 @@ class User(db.Model):
 
     def __repr__(self):
         """ show info aobut human"""
-        return "<user id={} fname={} lname={} email={}>Username={} password={} bio={} photo={}".format(
-            self.user_id, self.fname, self.lname, self.email, 
-            self.username, self.password, self.bio, self.photo_url
+        return "<user id={} fname={} lname={} email={}>password={} bio={} photo={}".format(
+            self.user_id, self.fname, self.lname, self.email,
+             self.password, self.bio, self.photo_url
             )
 
 

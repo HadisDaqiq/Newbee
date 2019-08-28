@@ -18,15 +18,16 @@
                 <img class="card-img-top" src="https://m.media-amazon.com/images/S/aplus-media/vc/7895a621-9359-412d-92d2-94c15adc4c70.jpg" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title"> {{event.title}}</h5>
+            </a>
                 <p class="card-text"> Detail: {{event.description}}</p>
             </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">Location: {{event.location}}</li>
         <li class="list-group-item">Time: {{event.start_date}} to {{event.end_date}}</li>
       </ul>
-      <div class="card-body">
-        <a href="#" class="card-link">Join </a>
-        <a href="#" class="card-link">Another link</a>
+      <div class="card-body" id="{{event.event_id}}">
+        <a href="/" class="join">Join </a>
+        <a href="/"class="delete">Delete</a>
       </div>
 
         {%endfor%}
@@ -64,10 +65,8 @@
         <input type = "text" name="end_date">
 
 
-
         <input type="submit" value="Create">
 
-      
     </form>
 
     </div>
@@ -75,8 +74,6 @@
 </div>
 
 <script>
-
-
 
     //prevents the default autmatic exit at the pop up form of creating event.
     let stalledForm = document.querySelector("#prevent-form-submission-form");
@@ -86,7 +83,6 @@
     evt.stopPropagation();
     
     });
-
 
     //after clicking on starting event button and making the pop up form appear.
     $("#start-event-btn").on('click', ()=>{
@@ -98,6 +94,25 @@
     $("#save-event-popup").on('click', ()=>{
         console.log("Submit btn hit")
          $("#save-event-popup").hide()
+    })
+
+    $(".delete").on('click', (event)=>{
+        var currentEventId = event.target.parentNode.id;
+        console.log(currentEventId)
+        // ajax gets a key value par. data cant take just a variable.
+        $.ajax({
+            url: '/delete_event',  
+            data: {currentEventId: currentEventId},
+            success: function(result){
+            alert(" delete event id went to the server");
+    }
+});
+        console.log("action button thing for delete is working")
+        // send id using ajax to the server.py
+
+
+        // when in server use that id to delete the event.
+
     })
 </script>
 

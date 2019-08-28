@@ -25,21 +25,12 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
+    if  session.get('user') == None:
+        return redirect('/login')
+
     events = Event.query.all()
     sports = Sport.query.all()
     return render_template("homepage.html", events=events, sports=sports)
-
-
-
-
-
-# @app.route("/events")
-# def event_list():
-#     """show a list of events"""
-
-#     # events = Event.query.all()
-#     return redirect('/')
-
 
 
 @app.route('/register')
@@ -51,22 +42,32 @@ def register_form():
 #user is already loged in. get users info and add it to the event list, 
 #list of users who have registered to that event. 
 
-# @app.route('/register', methods =["POST"])
-# def register_process():
-#     """Process Registration form"""
+@app.route('/join', methods =["POST"])
+def register_process():
+    """Process Registration form"""
 
-#     email = request.form.get("email")
-#     password = request.form.get("password")
+    email = request.form.get("email")
+    password = request.form.get("password")
 
-#     # if User.query.filter(User.email.in_(email)):
-#     if User.query.filter(User.email == email).first():
-#         return redirect('/') 
+    fname = request.form.get("fname")
+    lname = request.form.get("lname")
+    bio   = request.form.get("bio")
+    photo = request.form.get("photo")
 
-#     else:
-#         user= User(email = email, password = password)
-#         db.session.add(user)
-#         db.session.commit()
-#         return redirect('/')
+
+    user = User()
+    # if User.query.filter(User.email.in_(email)):
+    if User.query.filter(User.email == email).first():
+        return redirect('/') 
+
+    else:
+        user= User(fname = fname, lname = lname, email = email,
+         password = password, bio = bio, photo_url = photo)
+        db.session.add(user)
+        db.session.commit()
+        return redirect('/')
+
+        
 
 @app.route('/showlog')
 def show_login_form():
@@ -80,15 +81,25 @@ def login_form():
     email = request.args.get("email")
     password = request.args.get("password")
 
+    # user = db.session.query(User.email).filter(User.email == email).first()
 
-    if db.session.query(User.email).filter(User.email == email).first():
-        record= User.query.filter(User.email == email).first()
+    userinfo = db.session.query(User).filter(User.email == email).first()
+
+    if userinfo is None:
+        flash("user not found")
+        return redirect('/showlog')
+
+
+
+    if userinfo.password == password and userinfo.email == email:
+
+        print(">>>>>>>>>>>>>>>>>>>>>>",userinfo)
         # print("==>",record.user_id)
-        session['user'] = record.user_id
-        flash("logged in as %s" % record.user_id)
+        session['user'] = userinfo.user_id
+        flash("logged in as %s" % userinfo.user_id)
         return redirect('/')
     else:
-        flash("wrong password")
+        flash("wrong password or email")
         return redirect('/showlog')
 
 
@@ -119,8 +130,31 @@ def event_process():
     db.session.add(event)
     db.session.commit()
 
-
     return redirect('/')
+
+
+@app.route('/delete_event')
+def delete_process():
+
+    # if the userid is the same as the events.user_id then...
+
+    currentEventId = request.args.get("currentEventId")
+    print(">>>>>>>>>>>>>>>>>>>", currentEventId)
+
+    event_record = db.session.query(Event).filter(Event.event_id == currentEventId).first()
+
+    if event_record.user_id == session['user']:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>@@@@@@@@@@@@@")
+        # delete event that has the currentEventId
+        delete_event = db.session.query(Event).filter(Event.event_id == currentEventId).first()
+        print(delete_event)
+        db.session.delete(delete_event)
+        db.session.commit()
+        flash("event deleted")
+       
+    return redirect('/')
+
+    
 
 
 if __name__ == "__main__":
