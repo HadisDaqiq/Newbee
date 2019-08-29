@@ -1,4 +1,5 @@
 """Models and database functions for event Newbee database."""
+from sqlalchemy_imageattach.entity import Image, image_attachment
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -20,7 +21,7 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     bio= db.Column(db.String(50), nullable=True)
 
-    photo_url = db.Column(db.String(100), nullable=True)
+    User_Picture = image_attachment('UserPicture')
 
 
     def __repr__(self):
@@ -44,8 +45,11 @@ class Event(db.Model):
     description =db.Column(db.String(300), nullable=True)
     location = db.Column(db.String(300), nullable=True)
     expert_level = db.Column(db.Integer, nullable=True)
+    # change to dateTime
     start_date = db.Column(db.String(30), nullable=False)
     end_date = db.Column(db.String(30), nullable=False)
+
+    event_picture =  image_attachment('eventPicture')
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
                         nullable=False)

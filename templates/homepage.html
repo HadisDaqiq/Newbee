@@ -15,11 +15,10 @@
         {% for event in events %}
             <a href='/{{event.event_id}}'>
 <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="https://m.media-amazon.com/images/S/aplus-media/vc/7895a621-9359-412d-92d2-94c15adc4c70.jpg" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title"> {{event.title}}</h5>
+                <h5 class="event-title"> {{event.title}}</h5>
             </a>
-                <p class="card-text"> Detail: {{event.description}}</p>
+                <p class="event-des"> Detail: {{event.description}}</p>
             </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">Location: {{event.location}}</li>
@@ -28,7 +27,10 @@
       <div class="card-body" id="{{event.event_id}}">
         <a href="/" class="join">Join </a>
         <a href="/"class="delete">Delete</a>
+
+        
       </div>
+
 
         {%endfor%}
 

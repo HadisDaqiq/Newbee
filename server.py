@@ -118,6 +118,7 @@ def event_process():
     user_id = 1
     sport_id = request.args.get("sport")
 
+    photo = request.files['file']
 
     print("\n\n\SPORT: \n\n\n",sport_id)
 
