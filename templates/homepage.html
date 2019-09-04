@@ -14,34 +14,29 @@
 
 {% for event in events %}
 <div>
-<img class="card-img-top" style="width: 287px;" src={{image_urls[event.sport_id]}} alt="Card image cap">
+    <img class="card-img-top" style="width: 287px;" src={{image_urls[event.sport_id]}} alt="Card image cap">
 
 
-<a href='/event_detail?eventId={{event.event_id}}'>
+    <a href='/event_detail?eventId={{event.event_id}}'>
 
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-           <h5 class="event-title"> {{event.title}}</h5>
-       </a>
-       <p class="event-des"> Detail: {{event.description}}</p>
-   </div>
-   <ul class="list-group list-group-flush">
-    <li class="list-group-item">Location: {{event.location}}</li>
-    <li class="list-group-item">Date: {{event.date}} Time: {{event.time}} </li>
-</ul>
-<div class="card-body" id="{{event.event_id}}">
-    <a href="event-detail" class="join">Join </a>
-    <a href="/"class="delete">Delete</a>
-
-</div>
-</div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+               <h5 class="event-title"> {{event.title}}</h5>
+           </a>
+           <p class="event-des"> Detail: {{event.description}}</p>
+       </div>
+       <ul class="list-group list-group-flush">
+        <li class="list-group-item">Location: {{event.location}}</li>
+        <li class="list-group-item">Date: {{event.date}} Time: {{event.time}} </li>
+        </ul>
+    <div class="card-body" id="{{event.event_id}}">
+        <a href="event-detail" class="join">Join </a>
+        <a href="/"class="delete">Delete</a>
+    </div>
 </div>
 
 {%endfor%}
 
-</ul>
-</div>
-</div>
 
 
 <div id = "save-event-popup" style = "display: none">
@@ -58,27 +53,25 @@
 
         <br>
         Title
-        <input type= "text" name= "title">
+        <input type= "text" name= "title"/>
         <br>
         Description
-        <input type= "text" name="des">
+        <input type= "text" name="des"/>
         <br>
         Location
-        <input type= "text" name="location">
+        <input type= "text" name="location"/>
 
         <br>
         Date 
-        <input type= "text" name="start_date">
+        <input type= "text" name="start_date"/>
         Time
-        <input type = "text" name="end_date">
+        <input type = "text" name="end_date"/>
 
 
-        <input type="submit" value="Create">
+        <input type="submit" value="Create" />
 
     </form>
-
 </div>
-
 </div>
 
 <script>
@@ -116,12 +109,11 @@
             }
         });
         console.log("action button thing for delete is working")
+    })
 
+    
 
-
-
-
-        $(".event-title").on('click', (event)=>{
+    $(".event-title").on('click', (event)=>{
             alert("HITTTT")
         // ajax gets a key value par. data cant take just a variable.
         $.ajax({
