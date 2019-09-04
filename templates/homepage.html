@@ -111,25 +111,6 @@
         console.log("action button thing for delete is working")
     })
 
-    
-
-    $(".event-title").on('click', (event)=>{
-            alert("HITTTT")
-        // ajax gets a key value par. data cant take just a variable.
-        $.ajax({
-            url: '/event_detail',  
-            data: {currentEventId: currentEventId},
-            success: function(result){
-                alert("Have have signed up to the event");
-            }
-        });
-        console.log("action button thing for Join is working")
-        // send id using ajax to the server.py
-
-
-        // when in server use that id to delete the event.
-
-    })
 </script>
 
 {%endblock content%}   
