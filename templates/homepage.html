@@ -6,36 +6,41 @@
 
 {%block content%}
 
-    <h2>Events</h2>
+<h2>Events</h2>
 
-       <button class="" id = "start-event-btn"> 
-        Start a event
-      </button>
+<button class="" id = "start-event-btn"> 
+    Start a event
+</button>
 
-        {% for event in events %}
-            <a href='/{{event.event_id}}'>
-<div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="event-title"> {{event.title}}</h5>
-            </a>
-                <p class="event-des"> Detail: {{event.description}}</p>
-            </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Location: {{event.location}}</li>
-        <li class="list-group-item">Time: {{event.start_date}} to {{event.end_date}}</li>
-      </ul>
-      <div class="card-body" id="{{event.event_id}}">
-        <a href="/" class="join">Join </a>
-        <a href="/"class="delete">Delete</a>
-
-        
-      </div>
+{% for event in events %}
+<div>
+<img class="card-img-top" style="width: 287px;" src={{image_urls[event.sport_id]}} alt="Card image cap">
 
 
-        {%endfor%}
+<a href='/event_detail?eventId={{event.event_id}}'>
 
-    </ul>
-    </div>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+           <h5 class="event-title"> {{event.title}}</h5>
+       </a>
+       <p class="event-des"> Detail: {{event.description}}</p>
+   </div>
+   <ul class="list-group list-group-flush">
+    <li class="list-group-item">Location: {{event.location}}</li>
+    <li class="list-group-item">Date: {{event.date}} Time: {{event.time}} </li>
+</ul>
+<div class="card-body" id="{{event.event_id}}">
+    <a href="event-detail" class="join">Join </a>
+    <a href="/"class="delete">Delete</a>
+
+</div>
+</div>
+</div>
+
+{%endfor%}
+
+</ul>
+</div>
 </div>
 
 
@@ -60,10 +65,11 @@
         <br>
         Location
         <input type= "text" name="location">
-    
+
         <br>
-        Start Date - End Date
+        Date 
         <input type= "text" name="start_date">
+        Time
         <input type = "text" name="end_date">
 
 
@@ -71,7 +77,7 @@
 
     </form>
 
-    </div>
+</div>
 
 </div>
 
@@ -84,7 +90,7 @@
     //it is stoping the event form to look for a click handler outside of its container
     evt.stopPropagation();
     
-    });
+});
 
     //after clicking on starting event button and making the pop up form appear.
     $("#start-event-btn").on('click', ()=>{
@@ -95,7 +101,7 @@
     //exit out of popup once it clicks exit or outside of the form.(Gray area)
     $("#save-event-popup").on('click', ()=>{
         console.log("Submit btn hit")
-         $("#save-event-popup").hide()
+        $("#save-event-popup").hide()
     })
 
     $(".delete").on('click', (event)=>{
@@ -106,10 +112,26 @@
             url: '/delete_event',  
             data: {currentEventId: currentEventId},
             success: function(result){
-            alert(" delete event id went to the server");
-    }
-});
+                alert(" delete event id went to the server");
+            }
+        });
         console.log("action button thing for delete is working")
+
+
+
+
+
+        $(".event-title").on('click', (event)=>{
+            alert("HITTTT")
+        // ajax gets a key value par. data cant take just a variable.
+        $.ajax({
+            url: '/event_detail',  
+            data: {currentEventId: currentEventId},
+            success: function(result){
+                alert("Have have signed up to the event");
+            }
+        });
+        console.log("action button thing for Join is working")
         // send id using ajax to the server.py
 
 
@@ -118,5 +140,5 @@
     })
 </script>
 
- {%endblock content%}   
+{%endblock content%}   
 

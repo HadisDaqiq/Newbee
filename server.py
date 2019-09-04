@@ -29,8 +29,17 @@ def index():
         return redirect('/login')
 
     events = Event.query.all()
+    
     sports = Sport.query.all()
-    return render_template("homepage.html", events=events, sports=sports)
+    image_urls ={}
+    for sport in sports:
+        image_urls[sport.sport_id] = sport.img_url
+
+    events_test=db.session.query(Event,User).filter(Event.sport_id == Sport.sport_id).all()
+    #events_test = Event.query.join(Sport).all()
+    print('>>>>>>>>', events_test)
+    return render_template("homepage.html", events=events, sports=sports,
+        image_urls = image_urls)
 
 
 @app.route('/register')
@@ -62,7 +71,7 @@ def register_process():
 
     else:
         user= User(fname = fname, lname = lname, email = email,
-         password = password, bio = bio, photo_url = photo)
+         password = password, bio = bio, photo = photo)
         db.session.add(user)
         db.session.commit()
         return redirect('/')
@@ -113,18 +122,17 @@ def event_process():
     title = request.args.get("title")
     description = request.args.get("des")
     location = request.args.get("location")
-    start_date = request.args.get("start_date")
-    end_date = request.args.get("end_date")
+    date = request.args.get("date")
+    time = request.args.get("time")
     user_id = 1
     sport_id = request.args.get("sport")
 
-    photo = request.files['file']
 
     print("\n\n\SPORT: \n\n\n",sport_id)
 
     event = Event(title = title, description = description,
-        location = location, start_date = start_date,
-         end_date = end_date, user_id=user_id, sport_id=sport_id)
+        location = location,date = date, time = time,
+         user_id=user_id, sport_id=sport_id)
 
     print("\n\n\nevent: \n\n\n",event)
 
@@ -136,7 +144,7 @@ def event_process():
 
 @app.route('/delete_event')
 def delete_process():
-
+    """deleting events from homepage"""
     # if the userid is the same as the events.user_id then...
 
     currentEventId = request.args.get("currentEventId")
@@ -155,9 +163,22 @@ def delete_process():
        
     return redirect('/')
 
+
+
+@app.route('/event_detail')
+def event_detail():
+    """event details"""
     
+    print("TEST HIT!!")
+    event_id = request.args.get('eventId')
 
+    print('event id',event_id)
 
+    event = db.session.query(Event).filter(Event.event_id == event_id).first()
+
+    print(event.location)
+    return render_template("event.html")
+    
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension

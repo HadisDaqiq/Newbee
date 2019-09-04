@@ -1,6 +1,4 @@
 """Models and database functions for event Newbee database."""
-from sqlalchemy_imageattach.entity import Image, image_attachment
-
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -19,16 +17,15 @@ class User(db.Model):
     lname = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(50), nullable=False)
-    bio= db.Column(db.String(50), nullable=True)
-
-    User_Picture = image_attachment('UserPicture')
+    bio = db.Column(db.String(50), nullable=True)
+    photo =  db.Column(db.String(2000), nullable=True)
 
 
     def __repr__(self):
         """ show info aobut human"""
-        return "<user id={} fname={} lname={} email={}>password={} bio={} photo={}".format(
+        return "<user id={} fname={} lname={} email={}>password={} bio={} photo{}".format(
             self.user_id, self.fname, self.lname, self.email,
-             self.password, self.bio, self.photo_url
+             self.password, self.bio, self.photo
             )
 
 
@@ -45,11 +42,8 @@ class Event(db.Model):
     description =db.Column(db.String(300), nullable=True)
     location = db.Column(db.String(300), nullable=True)
     expert_level = db.Column(db.Integer, nullable=True)
-    # change to dateTime
-    start_date = db.Column(db.String(30), nullable=False)
-    end_date = db.Column(db.String(30), nullable=False)
-
-    event_picture =  image_attachment('eventPicture')
+    date = db.Column(db.DateTime(), nullable=True)
+    time = db.Column(db.DateTime(), nullable=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
                         nullable=False)
@@ -59,9 +53,9 @@ class Event(db.Model):
     def __repr__(self):
         """ show info about event"""
         return ("<event id={} title={} description={}"
-                " location={}> startData={} endDate={}").format(
+                " location={}> date={} time={} ").format(
             self.event_id, self.title, self.description, 
-            self.location, self.start_date, self.end_date)
+            self.location, self.date, self.time)
 
 
 class Sport(db.Model):
@@ -73,11 +67,12 @@ class Sport(db.Model):
                         autoincrement=True)
 
     sport_name = db.Column(db.String(50), nullable=True)
+    img_url =  db.Column(db.String(2000), nullable=True)
 
     def __repr__(self):
         """ show info aobut human"""
-        return "<sport_id={} fname={} sport_name={}".format(
-            self.sport_id, self.sport_name
+        return "<sport_id={} sport_name={} img_url{}".format(
+            self.sport_id, self.sport_name, self.img_url
             )
 
 class Register(db.Model):
