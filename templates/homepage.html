@@ -59,7 +59,7 @@
         <input type= "text" name="des"/>
         <br>
         Location
-        <input type= "text" name="location"/>
+        <input id = "location" type= "text" name="location"/>
 
         <br>
         Date 
@@ -76,14 +76,21 @@
 
 <script>
 
-    //prevents the default autmatic exit at the pop up form of creating event.
-    let stalledForm = document.querySelector("#prevent-form-submission-form");
 
-    stalledForm.addEventListener("click", function (evt) {
-    //it is stoping the event form to look for a click handler outside of its container
-    evt.stopPropagation();
-    
-});
+        //autocompletes location while creating an event.
+        const locationElem = document.getElementById('location');
+        const autocomplete = new google.maps.places.Autocomplete(locationElem);
+
+        //prevents the default autmatic exit at the pop up form of creating event.
+        let stalledForm = document.querySelector("#prevent-form-submission-form");
+
+        stalledForm.addEventListener("click", function (evt) {
+        //it is stoping the event form to look for a click handler outside of its container
+        evt.stopPropagation();
+        
+        });
+
+
 
     //after clicking on starting event button and making the pop up form appear.
     $("#start-event-btn").on('click', ()=>{
@@ -110,6 +117,13 @@
         });
         console.log("action button thing for delete is working")
     })
+
+
+
+    // $.ajax({
+    //     url:'https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters'
+    //     success:
+    // })
 
 </script>
 

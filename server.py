@@ -8,6 +8,10 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Event, Sport, Register, connect_to_db, db
 
+# from googleplaces import GooglePlaces, types, lang
+
+# API_KEY = 'AIzaSyACabi2174CB4th6-8LRXew0MrV1GibXy0'
+# google_places = GooglePlaces(API_KEY)
 
 app = Flask(__name__)
 

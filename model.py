@@ -39,8 +39,8 @@ class Event(db.Model):
                         autoincrement=True
                         )
     title = db.Column(db.String(100), nullable=False)
-    description =db.Column(db.String(300), nullable=True)
-    location = db.Column(db.String(300), nullable=True)
+    description =db.Column(db.String(600), nullable=True)
+    location = db.Column(db.String(500), nullable=True)
     expert_level = db.Column(db.Integer, nullable=True)
     date = db.Column(db.DateTime(), nullable=True)
     time = db.Column(db.DateTime(), nullable=True)
