@@ -180,8 +180,9 @@ def event_detail():
 
     event = db.session.query(Event).filter(Event.event_id == event_id).first()
 
-    print(event.location)
-    return render_template("event.html")
+    location = event.location
+    print(location)
+    return render_template("event.html", event= event)
     
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
