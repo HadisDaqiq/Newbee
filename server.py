@@ -8,7 +8,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Event, Sport, Register, connect_to_db, db
 
-# from googleplaces import GooglePlaces, types, lang
 
 # API_KEY = 'AIzaSyACabi2174CB4th6-8LRXew0MrV1GibXy0'
 # google_places = GooglePlaces(API_KEY)
@@ -17,6 +16,7 @@ app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
+
 
 
 # Normally, if you use an undefined variable in Jinja2, it fails
@@ -39,23 +39,28 @@ def index():
     for sport in sports:
         image_urls[sport.sport_id] = sport.img_url
 
-    events_test=db.session.query(Event,User).filter(Event.sport_id == Sport.sport_id).all()
-    #events_test = Event.query.join(Sport).all()
-    print('>>>>>>>>', events_test)
-    return render_template("homepage.html", events=events, sports=sports,
+    # events_test=db.session.query(Event,User).filter(Event.sport_id == Sport.sport_id).all()
+    # queries all the events for the currect user. 
+    joined_events_query = db.session.query(Register.event_id).filter(Register.user_id == session['user']).all()
+    joined_events= [value for (value,) in joined_events_query]
+    
+    print("@@@@@@@@@@@@@@@@@@@$$$$$$$$$$$$$$$$$$$",joined_events)
+    # print('>>>>>>>>', events_test)
+    return render_template("homepage.html", events=events, sports=sports, 
+        joined_events = joined_events,
         image_urls = image_urls)
 
 
 @app.route('/register')
 def register_form():
-    """Show Registration form"""
+    """Show Registration form """
 
     return render_template("registration_form.html")
 
 #user is already loged in. get users info and add it to the event list, 
 #list of users who have registered to that event. 
 
-@app.route('/join', methods =["POST"])
+@app.route('/signup', methods =["POST"])
 def register_process():
     """Process Registration form"""
 
@@ -128,9 +133,8 @@ def event_process():
     location = request.args.get("location")
     date = request.args.get("date")
     time = request.args.get("time")
-    user_id = 1
+    user_id = session['user']
     sport_id = request.args.get("sport")
-
 
     print("\n\n\SPORT: \n\n\n",sport_id)
 
@@ -157,7 +161,6 @@ def delete_process():
     event_record = db.session.query(Event).filter(Event.event_id == currentEventId).first()
 
     if event_record.user_id == session['user']:
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>@@@@@@@@@@@@@")
         # delete event that has the currentEventId
         delete_event = db.session.query(Event).filter(Event.event_id == currentEventId).first()
         print(delete_event)
@@ -171,18 +174,52 @@ def delete_process():
 
 @app.route('/event_detail')
 def event_detail():
-    """event details"""
+    """redirect event details and number of attendees of each event"""
     
     print("TEST HIT!!")
-    event_id = request.args.get('eventId')
 
-    print('event id',event_id)
+    # getting event id from homepage 
+    event_id = request.args.get('eventId')
+    # counting the total number of registeration for an event.
+    registrant_count = db.session.query(Register).filter(Register.event_id ==event_id).count()
 
     event = db.session.query(Event).filter(Event.event_id == event_id).first()
-
     location = event.location
     print(location)
-    return render_template("event.html", event= event)
+    return render_template("event.html", event= event, registrant_count=registrant_count)
+
+
+
+
+@app.route('/join')
+def join():
+    """allows user to join or unjoin """
+    
+    # getting event id from homepage
+    event_id = request.args.get('eventId')
+
+    user_id = session['user']
+
+    print("@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>",user_id)
+
+
+    register = Register(user_id = user_id, event_id = event_id)
+    db.session.add(register)
+    db.session.commit()
+
+    return redirect('/')
+    
+
+@app.route('/unjoin')
+def unjoin():
+    """allows the user to unjoin an event"""
+    event_id = request.args.get('eventId')
+    print("-=-=-=-=-",event_id)
+    register = db.session.query(Register).filter(Register.event_id == event_id).first()
+    db.session.delete(register)
+    db.session.commit()
+
+    return redirect('/')
     
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

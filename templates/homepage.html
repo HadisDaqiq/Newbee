@@ -14,31 +14,44 @@
     Start a event
 </button>
 
+
 {% for event in events %}
 <div>
     <img class="card-img-top" style="width: 287px;" src={{image_urls[event.sport_id]}} alt="Card image cap">
 
-
-    <a href='/event_detail?eventId={{event.event_id}}'>
-
-        <div class="card" style="width: 18rem;">
+    <!-- event title that will redirect to event page -->
+   
+<div class="card" style="width: 18rem;">
             <div class="card-body">
-               <h5 class="event-title"> {{event.title}}</h5>
-           </a>
-           <p class="event-des"> Detail: {{event.description}}</p>
-       </div>
-       <ul class="list-group list-group-flush">
-        <li class="list-group-item">Location: {{event.location}}</li>
-        <li class="list-group-item">Date: {{event.date}} Time: {{event.time}} </li>
-        </ul>
-    <div class="card-body" id="{{event.event_id}}">
-        <a href="event-detail" class="join">Join </a>
-        <a href="/"class="delete">Delete</a>
-    </div>
+                 <a href='/event_detail?eventId={{event.event_id}}'>
+                    <h5 class="event-title"> {{event.title}}</h5>
+                </a>
+                <p class="event-des"> Detail: {{event.description}}</p>
+            </div>
+
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Location: {{event.location}}</li>
+                <li class="list-group-item">Date: {{event.date}} Time: {{event.time}} </li>
+            </ul>
+        <div class="card-body" id="{{event.event_id}}">
+            {% if event.event_id in joined_events%}
+                <a href="/unjoin?eventId={{event.event_id}}" class="unjoin">Unjoin </a>
+            {% else %}
+                <a href="/join?eventId={{event.event_id}}" class="join">Join </a>
+            {% endif %}
+
+
+            {%if event.user_id == session['user']%}
+
+                <a href="/" class="delete">Delete</a>
+            {% endif %}          
+
+        </div>
+
 </div>
 
 {%endfor%}
-
 
 
 <div id = "save-event-popup" style = "display: none">
@@ -62,19 +75,20 @@
         <br>
         Location
         <input id = "location" type= "text" name="location"/>
-
         <br>
         Date 
-        <input type= "text" name="start_date"/>
+        <input type = "text" name="start_date"/>
+
         Time
         <input type = "text" name="end_date"/>
 
-
         <input type="submit" value="Create" />
 
-    </form>
+        </form>
+    </div>
 </div>
-</div>
+
+
 
 <script>
 
@@ -122,11 +136,19 @@
 
 
 
-    // $.ajax({
-    //     url:'https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters'
-    //     success:
+    // $(".join").on('click', (event)=>{
+    //     var currentEventId = event.target.parentNode.id;
+    //     console.log(currentEventId)
+    //     // ajax gets a key value par. data cant take just a variable.
+    //     $.ajax({
+    //         url: '/event-detail',  
+    //         data: {currentEventId: currentEventId},
+    //         success: function(result){
+    //             alert("You have Joined this event");
+    //         }
+    //     });
+    //     console.log("action button thing for join is working")
     // })
-
 </script>
 
 {%endblock content%}   
