@@ -1,6 +1,6 @@
 
 """Events adding."""
-
+from dateutil.parser import parse
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash, session)
@@ -17,8 +17,6 @@ app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
 
-
-
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
 # error.
@@ -30,10 +28,24 @@ def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
     if  session.get('user') == None:
-        return redirect('/login')
+        return redirect('/showlog')
 
     events = Event.query.all()
-    
+
+
+    for event in events:
+        if event.date !=None and event.time !=None:
+            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            print(type(event.date))
+            # format = '%a %I:%M %p %b %d, %Y'
+            format = '%a %I:%M %p %b %d, %y'
+            event.date = event.date.strftime(format)
+            event.time = event.time.strftime(format)
+            
+            # event.date = start_date.strftime(format)
+            # event.time = end_date.strftime(format)
+
+        
     sports = Sport.query.all()
     image_urls ={}
     for sport in sports:
@@ -44,7 +56,7 @@ def index():
     joined_events_query = db.session.query(Register.event_id).filter(Register.user_id == session['user']).all()
     joined_events= [value for (value,) in joined_events_query]
     
-    print("@@@@@@@@@@@@@@@@@@@$$$$$$$$$$$$$$$$$$$",joined_events)
+    print("@@@@@@@@@@@@@@@@@@@",joined_events)
     # print('>>>>>>>>', events_test)
     return render_template("homepage.html", events=events, sports=sports, 
         joined_events = joined_events,
@@ -94,15 +106,15 @@ def show_login_form():
     return render_template("login.html")
 
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login_form():
-    email = request.args.get("email")
-    password = request.args.get("password")
+    """authenticate user information"""
+    email = request.form.get("email")
+    password = request.form.get("password")
 
     # user = db.session.query(User.email).filter(User.email == email).first()
 
     userinfo = db.session.query(User).filter(User.email == email).first()
-
     if userinfo is None:
         flash("user not found")
         return redirect('/showlog')
@@ -120,6 +132,11 @@ def login_form():
         flash("wrong password or email")
         return redirect('/showlog')
 
+@app.route('/logout')
+def logout():
+    """logs out the current user"""
+    session.clear()
+    return redirect("/")
 
 
 @app.route('/event')
@@ -131,15 +148,16 @@ def event_process():
     title = request.args.get("title")
     description = request.args.get("des")
     location = request.args.get("location")
-    date = request.args.get("date")
-    time = request.args.get("time")
+    start_date_time = request.args.get("start_date_time")
+    end_date_time = request.args.get("end_date_time")
+    print("@@@@@@@@@@@@@@@@@@@@@@@",start_date_time, end_date_time)
     user_id = session['user']
     sport_id = request.args.get("sport")
 
     print("\n\n\SPORT: \n\n\n",sport_id)
 
     event = Event(title = title, description = description,
-        location = location,date = date, time = time,
+        location = location,date = start_date_time, time = end_date_time,
          user_id=user_id, sport_id=sport_id)
 
     print("\n\n\nevent: \n\n\n",event)

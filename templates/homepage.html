@@ -10,52 +10,60 @@
 
 <h2>Events</h2>
 
-<button class="" id = "start-event-btn"> 
-    Start a event
-</button>
 
 
-{% for event in events %}
-<div>
-    <img class="card-img-top" style="width: 287px;" src={{image_urls[event.sport_id]}} alt="Card image cap">
 
-    <!-- event title that will redirect to event page -->
-   
-<div class="card" style="width: 18rem;">
-            <div class="card-body">
-                 <a href='/event_detail?eventId={{event.event_id}}'>
-                    <h5 class="event-title"> {{event.title}}</h5>
-                </a>
-                <p class="event-des"> Detail: {{event.description}}</p>
+<div class="container">
+
+    <div class = "row new_event">
+        <button class="btn btn-info btn-lg" id = "start-event-btn"> 
+            New Event
+        </button>
+    </div>
+
+
+    {% for event in events %}
+    <div class="row">
+        <div class="card card-price">
+            <div class="card-img">
+                <img style="width: 100%;" src={{image_urls[event.sport_id]}} alt="Card image cap">
             </div>
 
+            <!-- event title that will redirect to event page -->
+            <div class="card" ><!--style="width: 18rem;"-->
+                <div class="card-body">
+                     <a class="price" href='/event_detail?eventId={{event.event_id}}'>
+                        <h5 class="event-title"> {{event.title}}</h5>
+                    </a>
+                    <div class="lead event-des"> {{event.description}}</div>
+                </div>
 
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Location: {{event.location}}</li>
-                <li class="list-group-item">Date: {{event.date}} Time: {{event.time}} </li>
-            </ul>
-        <div class="card-body" id="{{event.event_id}}">
-            {% if event.event_id in joined_events%}
-                <a href="/unjoin?eventId={{event.event_id}}" class="unjoin">Unjoin </a>
-            {% else %}
-                <a href="/join?eventId={{event.event_id}}" class="join">Join </a>
-            {% endif %}
+                <ul class="details"><!--class="list-group list-group-flush"-->
+                    <li >Location: {{event.location}}</li>
+                    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+                    <li >Start Date/Time: {{event.date}} </li>
+                   <li >End Date/Time: {{event.time}} </li>
+                </ul>
 
+                <div class="card-body" id="{{event.event_id}}">
+                    {% if event.event_id in joined_events %}
+                        <a class="btn btn-primary btn-lg btn-block" href="/unjoin?eventId={{event.event_id}}" class="unjoin">Leave </a>
+                    {% else %}
+                        <a class="btn btn-primary btn-lg btn-block"  href="/join?eventId={{event.event_id}}" class="join">Join </a>
+                    {% endif %}
 
-            {%if event.user_id == session['user']%}
-
-                <a href="/" class="delete">Delete</a>
-            {% endif %}          
-
+                    {% if event.user_id == session['user'] %}
+                        <a href="/" class="btn btn-danger btn-lg btn-block delete">Delete</a>
+                    {% endif %}          
+                </div>
+            </div>
         </div>
-
+    </div>
+    {%endfor%}
 </div>
 
-{%endfor%}
-
-
 <div id = "save-event-popup" style = "display: none">
-    <div class = "popup-content">
+<!--     <div class = "popup-content">
 
         <form action= "/event" id = "prevent-form-submission-form" 
         method= "GET">
@@ -76,28 +84,138 @@
         Location
         <input id = "location" type= "text" name="location"/>
         <br>
-        Date 
-        <input type = "text" name="start_date"/>
-
-        Time
-        <input type = "text" name="end_date"/>
-
-        <input type="submit" value="Create" />
-
-        </form>
+        Date/Time
+       <div class="container">
+        <div class="row">
+            <label>Date/time</label>
+            <div class='col-xs-6'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
     </div>
+
+
+        <input type="submit" value="Create" />     -->  
+            
+   
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">New Event Details</div>
+      <div class="panel-body">
+        <form action= "/event" id = "prevent-form-submission-form" 
+        method= "GET">
+
+
+         <div class="row">
+             <div class="col-md-6">
+               <div class="form-group">
+                   <label class="control-label">Sport</label>
+                    <select name ="sport">
+                        {%for sport in sports%}
+                        <option value ="{{sport.sport_id}}">{{sport.sport_name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-6">
+               <div class="form-group">
+                  <label class="control-label">Title</label>
+                  <input type="text" class="form-control" name="title" id="title">
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+             <div class="col-md-6">
+               <div class="form-group">
+                  <label class="control-label">Description</label>
+                  <input type="text" class="form-control" name="des" id="des">
+               </div>
+            </div>
+         </div>
+
+         <div class="row">           
+            <div class='col-md-6'>
+               <div class="form-group">
+                  <label class="control-label">Start Date/Time</label>
+                  <div class='input-group date' id='datetimepicker1'>
+                     <input type='text' class="form-control" name="start_date_time"/>
+                     <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+                  </div>
+               </div>
+            </div>
+        </div>
+
+        <div class="row">           
+            <div class='col-md-6'>
+               <div class="form-group">
+                  <label class="control-label">End Date/Time</label>
+                  <div class='input-group date' id='datetimepicker2'>
+                     <input type='text' class="form-control" name = "end_date_time"/>
+                     <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+                  </div>
+               </div>
+            </div>
+        </div>
+
+
+         <div class="row">
+              <div class="col-md-6">
+               <div class="form-group">
+                  <label class="control-label">Location</label>
+                  <input id = "location" type= "text" name="location"/>
+               </div>
+            </div>
+         </div>
+
+
+          <div class="row">
+             <div class="col-md-6">
+               <div class="form-group">
+                  <input type="submit" class="btn btn-primary" value="Create">
+            </div>
+         </div>
+        
+       
+        </form>
+      </div>
+   </div>
 </div>
 
 
 
+    </div>
+
+</div>
+
 <script>
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+
+
+
 
 
         //autocompletes location while creating an event.
         const locationElem = document.getElementById('location');
         const autocomplete = new google.maps.places.Autocomplete(locationElem);
 
-        //prevents the default autmatic exit at the pop up form of creating event.
+        //prevents the default automatic exit at the pop up form of creating event.
         let stalledForm = document.querySelector("#prevent-form-submission-form");
 
         stalledForm.addEventListener("click", function (evt) {
@@ -106,6 +224,10 @@
         
         });
 
+
+
+    // datetimepicker for date
+    // $('#datetimepicker1').data("DateTimePicker").FUNCTION()
 
 
     //after clicking on starting event button and making the pop up form appear.
@@ -134,21 +256,6 @@
         console.log("action button thing for delete is working")
     })
 
-
-
-    // $(".join").on('click', (event)=>{
-    //     var currentEventId = event.target.parentNode.id;
-    //     console.log(currentEventId)
-    //     // ajax gets a key value par. data cant take just a variable.
-    //     $.ajax({
-    //         url: '/event-detail',  
-    //         data: {currentEventId: currentEventId},
-    //         success: function(result){
-    //             alert("You have Joined this event");
-    //         }
-    //     });
-    //     console.log("action button thing for join is working")
-    // })
 </script>
 
 {%endblock content%}   
