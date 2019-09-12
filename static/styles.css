@@ -1,7 +1,7 @@
 
 body{
     background-color: white ;
-}
+  }
 
 
 
@@ -39,6 +39,31 @@ body{
 }
 
 
+
+.newevent-form{
+
+  height: 150px;
+ 
+
+
+  align-items: center;
+  text-align: center;
+
+}
+
+
+.newevent-form input{
+ 
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 5px;
+
+  align-items: center;
+  text-align: center;
+
+}
+
+
 .search{
   width: 300px;
   text-align: left;
@@ -50,7 +75,8 @@ body{
 }
 
 .popup-content{
-    background-color: white;
+    
+    background-color: lightblue;
 
 }
 
@@ -58,6 +84,7 @@ body{
 .container{
 
   width: 500px;
+
 
 }
 
@@ -106,22 +133,7 @@ body{
 #login-dp .form-group {
     margin-bottom: 10px;
 }
-.btn-fb{
-    color: #fff;
-    background-color:#3b5998;
-}
-.btn-fb:hover{
-    color: #fff;
-    background-color:#496ebc 
-}
-.btn-tw{
-    color: #fff;
-    background-color:#55acee;
-}
-.btn-tw:hover{
-    color: #fff;
-    background-color:#59b5fa;
-}
+
 @media(max-width:768px){
     #login-dp{
         background-color: inherit;
@@ -148,19 +160,32 @@ body{
 
 
 
-.register_background{
+.signup-form{
 
-  width: 700px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(250,250,240,.7);
+  width: 400px;
+  margin: 150px auto 100px auto;
+
+  align-items: center;
+  text-align: center;
 
 }
+
+
+
+.signup-form input{
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 5px;
 }
 
+.signup-form-child{
+  margin: 10px;
+  padding: 10px;
 
-
-
-
-
-
+}
 
 
 

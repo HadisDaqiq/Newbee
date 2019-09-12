@@ -5,23 +5,34 @@
     
 <body background="/static/images/background1.jpg">
 
-<div class="register_background">
+
   
+<form action="/signup" method="POST" class ="signup-form">
+    <h2> Sign Up </h2>
+    <div>
+        <label> <div> Email </div><input type="text" name="email" id="email"></label>
+    </div>
+    <div>
+        <label> <div>Password </div><input type="text" name="password" id="password"></label>
+    </div>
+    <div>
+        <label> <div>First Name </div><input type="text" name="fname" id="fname"></label>
+    </div>
+    <div>
+        <label> <div>Last Name </div><input type="text" name="lname" id="lname"></label>
+    </div>
+    <div> 
+        <label> <div>Bio </div><input type="text" name="bio" id="bio"></label>
+    </div>
 
-<h2> Login Form</h2>
+    <div>
+        <label> <div>photo Url</div> <input type="text" name="photo" id="photo"></label>
+    </div>
+    <br>
 
-<form action="/signup" method="POST">
-
-    <label> Email: <input type="text" name="email" id="email"></label>
-    <label> Password: <input type="text" name="password" id="password"></label>
-
-    <label> First Name: <input type="text" name="fname" id="fname"></label>
-    <label> Last Name: <input type="text" name="lname" id="lname"></label>
-
-    <label> Bio: <input type="text" name="bio" id="bio"></label>
-    <label> photo: <input type="text" name="photo" id="photo"></label>
-
-    <input type="submit" value="submit">
+    <div>
+        <input type="submit" value="Submit">
+    </div>
 
 </form>
 <script>
@@ -29,7 +40,11 @@
 </script>
 
 
-</div>
+
+
+
+
+
 
 
 

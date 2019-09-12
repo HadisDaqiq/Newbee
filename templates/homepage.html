@@ -8,8 +8,9 @@
 
  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACabi2174CB4th6-8LRXew0MrV1GibXy0&libraries=places"></script>
 
-<h2>Events</h2>
+<body background="/static/images/background1.jpg">
 
+<h2>Events</h2>
 
 
 
@@ -38,6 +39,7 @@
                     <div class="lead event-des"> {{event.description}}</div>
                 </div>
 
+
                 <ul class="details"><!--class="list-group list-group-flush"-->
                     <li >Location: {{event.location}}</li>
                     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
@@ -63,48 +65,6 @@
 </div>
 
 <div id = "save-event-popup" style = "display: none">
-<!--     <div class = "popup-content">
-
-        <form action= "/event" id = "prevent-form-submission-form" 
-        method= "GET">
-        Sport
-        <select name ="sport">
-            {%for sport in sports%}
-            <option value ="{{sport.sport_id}}">{{sport.sport_name}}</option>
-            {%endfor%}
-        </select>
-
-        <br>
-        Title
-        <input type= "text" name= "title"/>
-        <br>
-        Description
-        <input type= "text" name="des"/>
-        <br>
-        Location
-        <input id = "location" type= "text" name="location"/>
-        <br>
-        Date/Time
-       <div class="container">
-        <div class="row">
-            <label>Date/time</label>
-            <div class='col-xs-6'>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-
-
-        <input type="submit" value="Create" />     -->  
-            
    
 <div class="container">
   <div class="panel panel-primary">
@@ -115,7 +75,7 @@
 
 
          <div class="row">
-             <div class="col-md-6">
+             <div class="col-md-12">
                <div class="form-group">
                    <label class="control-label">Sport</label>
                     <select name ="sport">
@@ -128,7 +88,7 @@
          </div>
 
          <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                <div class="form-group">
                   <label class="control-label">Title</label>
                   <input type="text" class="form-control" name="title" id="title">
@@ -137,7 +97,7 @@
          </div>
 
          <div class="row">
-             <div class="col-md-6">
+             <div class="col-md-12">
                <div class="form-group">
                   <label class="control-label">Description</label>
                   <input type="text" class="form-control" name="des" id="des">
@@ -146,7 +106,7 @@
          </div>
 
          <div class="row">           
-            <div class='col-md-6'>
+            <div class='col-md-12'>
                <div class="form-group">
                   <label class="control-label">Start Date/Time</label>
                   <div class='input-group date' id='datetimepicker1'>
@@ -160,7 +120,7 @@
         </div>
 
         <div class="row">           
-            <div class='col-md-6'>
+            <div class='col-md-12'>
                <div class="form-group">
                   <label class="control-label">End Date/Time</label>
                   <div class='input-group date' id='datetimepicker2'>
@@ -175,9 +135,10 @@
 
 
          <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                <div class="form-group">
                   <label class="control-label">Location</label>
+                  <br>
                   <input id = "location" type= "text" name="location"/>
                </div>
             </div>
@@ -185,12 +146,11 @@
 
 
           <div class="row">
-             <div class="col-md-6">
+             <div class="col-md-12">
                <div class="form-group">
                   <input type="submit" class="btn btn-primary" value="Create">
             </div>
          </div>
-        
        
         </form>
       </div>
@@ -199,9 +159,6 @@
 
 
 
-    </div>
-
-</div>
 
 <script>
         $('#datetimepicker1').datetimepicker();
