@@ -10,17 +10,18 @@
 
 <body background="/static/images/background1.jpg">
 
-<h2>Events</h2>
-
-
 
 <div class="container">
 
     <div class = "row new_event">
-        <button class="btn btn-info btn-lg" id = "start-event-btn"> 
-            New Event
-        </button>
+
+        <a class="newevent-btn" id = "start-event-btn"> 
+            
+                <h3>New Event</h3>
+
+        </a>
     </div>
+
 
 
     {% for event in events %}
@@ -149,16 +150,14 @@
              <div class="col-md-12">
                <div class="form-group">
                   <input type="submit" class="btn btn-primary" value="Create">
+               </div>
             </div>
-         </div>
-       
-        </form>
+          </div>
+
       </div>
    </div>
 </div>
-
-
-
+</form>
 
 <script>
         $('#datetimepicker1').datetimepicker();

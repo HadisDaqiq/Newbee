@@ -60,6 +60,21 @@ body{
 
   align-items: center;
   text-align: center;
+  filter: blur(8px);
+
+}
+
+
+.new_event{
+  color:white;
+  border: solid;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  border-color: #A0B9CC;
+  background-color:#DBE7EE;
+  border-width: 2px;
+  padding: 20px;
+
 
 }
 
@@ -96,10 +111,6 @@ body{
   top: 50px;
   left:50px;
 }
-
-
-
-
 
 
 
@@ -151,14 +162,6 @@ body{
 }   
 
 
-/*.background{
-.background:image: url("/static/images/background.png");
-}
-
-
-*/
-
-
 
 .signup-form{
 
@@ -186,12 +189,6 @@ body{
   padding: 10px;
 
 }
-
-
-
-
-
-
 
 
 
