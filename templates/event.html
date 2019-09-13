@@ -6,7 +6,7 @@
        * element that contains the map. */
       #map {
         height: 50%;
-        width: 100%;
+        width: 90%;
 
       }
       /* Optional: Makes the sample page fill the window. */
@@ -26,20 +26,22 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACabi2174CB4th6-8LRXew0MrV1GibXy0&callback=codeAddress"
     async defer></script>
 <body background="/static/images/background1.jpg">
+<div class = "event-details">
+    <h1 class='header'> {{event.title}} </h1>
 
-<h1 class='header'> {{event.title}} </h1>
+    <h2 > Details </h2>
 
-<h2 > Details </h2>
+    <div>{{event.description}}</div>
 
-<div>{{event.description}}</div>
+    <h2> Attendees </h2>
+    <div>Attendees: {{registrant_count}}</div>
 
-<h2> Attendees </h2>
-<div>Attendees: {{registrant_count}}</div>
-<i style='font-size:34px' class='far'>&#xf017;</i>
-<div>Start Time/Date: {{event.date}}</div>
-<div>End Time/Date: {{event.time}}</div>
+    <div>Start Time/Date: {{event.date}}</div>
+    <div>End Time/Date: {{event.time}}</div>
 
-<div id="map"></div> 
+</div>
+
+<div id="map" class="map"></div> 
 
     <script>
             function codeAddress(address) {
@@ -63,6 +65,7 @@
                 });
             }
     </script>   
+
 
 {%endblock content%}  
 

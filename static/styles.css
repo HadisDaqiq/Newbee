@@ -19,20 +19,18 @@ body{
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
 }
 
 
 
 #save-event-popup{
     text-align: center;
-    background-color: white;
+    background-color:rgb(16,109,137);
     color: black;
     position: fixed;
     top:0; bottom:0; left:0; right:0;
 
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
 
@@ -87,6 +85,23 @@ body{
   top: 10px;
   left:300px;
   z-index: 4;
+}
+
+
+.navbarsearch{
+  width: 100% !important;
+}
+
+
+
+
+.event-details{
+  color: white;
+  margin: 50px;
+}
+
+.map{
+  margin:50px;
 }
 
 .popup-content{

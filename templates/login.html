@@ -13,23 +13,17 @@
         <source src="static/images/Fifa.mp4" type="video/mp4">
         <source src="static/images/Basketball.mp4" type="video/mp4">    
     </video>
-    <div><
 </div>
-
-<!-- <h2> Login</h2>
-<form action= "/login" method= "POST">
-    Email
-    <input type= "text" name= "email">
-    Password
-    <input type= "password" name="password">
-    <input type="submit" name="submit" value="Log in">
-
-</form>
-
-<a href="/register" >
-    <input type ="submit" name="signup" value="Sign Up ">
-    </a>
- -->
+<div>
+    <form role="search" action="/search" accept-charset="UTF-8" >
+        <div class="form-group" style="width: 450px; left:33%; position:absolute; top:40%">
+            <input type="text" class="form-control" placeholder="Search for events near you..." name="searchKeyword" style="height:50px;">
+        </div>
+    </form>
+</div>
+<script>
+    $("#navSearchBar").hide();
+</script>
 
 {%endblock content%}   
 

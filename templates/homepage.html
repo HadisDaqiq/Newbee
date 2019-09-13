@@ -16,7 +16,7 @@
     <div class = "row new_event">
 
         <a class="newevent-btn" id = "start-event-btn"> 
-            
+
                 <h3>New Event</h3>
 
         </a>
@@ -55,7 +55,7 @@
                         <a class="btn btn-primary btn-lg btn-block"  href="/join?eventId={{event.event_id}}" class="join">Join </a>
                     {% endif %}
 
-                    {% if event.user_id == session['user'] %}
+                    {% if session.get('user') != None and event.user_id == session['user'] %}
                         <a href="/" class="btn btn-danger btn-lg btn-block delete">Delete</a>
                     {% endif %}          
                 </div>
@@ -65,7 +65,9 @@
     {%endfor%}
 </div>
 
-<div id = "save-event-popup" style = "display: none">
+
+
+<div id = "save-event-popup" class="save-event-popup">
    
 <div class="container">
   <div class="panel panel-primary">

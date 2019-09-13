@@ -6,6 +6,8 @@ from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash, session)
 from flask_debugtoolbar import DebugToolbarExtension
 
+from sqlalchemy import or_
+
 from model import User, Event, Sport, Register, connect_to_db, db
 
 
@@ -21,17 +23,21 @@ app.secret_key = "ABC"
 # silently. This is horrible. Fix this so that, instead, it raises an
 # error.
 app.jinja_env.undefined = StrictUndefined
-
+searchedEvents = None
 
 @app.route('/')
 def index():
     """Homepage"""
     print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
-    if  session.get('user') == None:
-        return redirect('/showlog')
+    #if  session.get('user') == None:
+        #return redirect('/showlog')
 
-    events = Event.query.all()
-
+    if searchedEvents == None:
+        events = Event.query.all()
+        #redirect = "login.html"
+    else:
+        events = searchedEvents
+        #redirect = "homepage.html"
 
     for event in events:
         if event.date !=None and event.time !=None:
@@ -53,9 +59,11 @@ def index():
 
     # events_test=db.session.query(Event,User).filter(Event.sport_id == Sport.sport_id).all()
     # queries all the events for the currect user. 
-    joined_events_query = db.session.query(Register.event_id).filter(Register.user_id == session['user']).all()
-    joined_events= [value for (value,) in joined_events_query]
-    
+    if session.get('user') == None:
+        joined_events = []
+    else:
+        joined_events_query = db.session.query(Register.event_id).filter(Register.user_id == session['user']).all()
+        joined_events= [value for (value,) in joined_events_query]
     print("@@@@@@@@@@@@@@@@@@@",joined_events)
     # print('>>>>>>>>', events_test)
     return render_template("homepage.html", events=events, sports=sports, 
@@ -127,7 +135,7 @@ def login_form():
         # print("==>",record.user_id)
         session['user'] = userinfo.user_id
         flash("logged in as %s" % userinfo.user_id)
-        return redirect('/')
+        return redirect('/showlog')
     else:
         flash("wrong password or email")
         return redirect('/showlog')
@@ -136,7 +144,24 @@ def login_form():
 def logout():
     """logs out the current user"""
     session.clear()
-    return redirect("/")
+    return redirect("/showlog")
+
+@app.route('/search')
+def search():
+    """logs out the current user"""
+    searchKeyword = request.args.get("searchKeyword")
+    search = "%{}%".format(searchKeyword)
+    #events = db.session.query(Event).filter(or_(Event.title.ilike(search), Event.description.ilike(search))).all()
+    events = []
+    
+    sports = db.session.query(Sport).filter(Sport.sport_name.ilike(search)).all()
+    for sport in sports:
+        eventList = db.session.query(Event).filter(Event.sport_id == sport.sport_id).all()
+        for event in eventList:
+            events.append(event)
+    global searchedEvents
+    searchedEvents = events
+    return index()
 
 
 @app.route('/event')
@@ -202,8 +227,11 @@ def event_detail():
     registrant_count = db.session.query(Register).filter(Register.event_id ==event_id).count()
 
     event = db.session.query(Event).filter(Event.event_id == event_id).first()
+    format = '%a %I:%M %p %b %d, %y'
+    event.date = event.date.strftime(format)
+    event.time = event.time.strftime(format)
     location = event.location
-    print(location)
+
     return render_template("event.html", event= event, registrant_count=registrant_count)
 
 
