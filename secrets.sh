@@ -1,3 +1,3 @@
 
 
-export secret_key="VerySecretKey"
+export secret_key="SuperSecretKey"
