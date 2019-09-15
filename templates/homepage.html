@@ -10,15 +10,11 @@
 
 <body background="/static/images/background1.jpg">
 
-
 <div class="container">
-
-    <div class = "row new_event">
-
+   <div class = "row new_event">
         <a class="newevent-btn" id = "start-event-btn"> 
 
                 <h3>New Event</h3>
-
         </a>
     </div>
 
@@ -34,12 +30,11 @@
             <!-- event title that will redirect to event page -->
             <div class="card" ><!--style="width: 18rem;"-->
                 <div class="card-body">
-                     <a class="price" href='/event_detail?eventId={{event.event_id}}'>
+                    <a class="price" href='/event_detail?eventId={{event.event_id}}'>
                         <h5 class="event-title"> {{event.title}}</h5>
                     </a>
-                    <div class="lead event-des"> {{event.description}}</div>
-                </div>
-
+                <div class="lead event-des"> {{event.description}}</div>
+            </div>
 
                 <ul class="details"><!--class="list-group list-group-flush"-->
                     <li >Location: {{event.location}}</li>

@@ -1,23 +1,19 @@
 
 """Events adding."""
+import os
 from dateutil.parser import parse
 from jinja2 import StrictUndefined
-
 from flask import (Flask, render_template, redirect, request, flash, session)
 from flask_debugtoolbar import DebugToolbarExtension
-
 from sqlalchemy import or_
-
 from model import User, Event, Sport, Register, connect_to_db, db
 
 
-# API_KEY = 'AIzaSyACabi2174CB4th6-8LRXew0MrV1GibXy0'
-# google_places = GooglePlaces(API_KEY)
 
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = os.environ.get("secret_key")
 
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
@@ -28,9 +24,8 @@ searchedEvents = None
 @app.route('/')
 def index():
     """Homepage"""
-    print(">>>>>>>>>>>>>>>>>>>>>>here<<<<<<<<<<<<<<<<<<<<<<<<<")
-    #if  session.get('user') == None:
-        #return redirect('/showlog')
+    if  session.get('user') == None:
+        return redirect('/showlog')
 
     if searchedEvents == None:
         events = Event.query.all()
@@ -39,36 +34,39 @@ def index():
         events = searchedEvents
         #redirect = "homepage.html"
 
-    for event in events:
-        if event.date !=None and event.time !=None:
-            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            print(type(event.date))
-            # format = '%a %I:%M %p %b %d, %Y'
-            format = '%a %I:%M %p %b %d, %y'
-            event.date = event.date.strftime(format)
-            event.time = event.time.strftime(format)
-            
-            # event.date = start_date.strftime(format)
-            # event.time = end_date.strftime(format)
+        for event in events:
+            if event.date !=None and event.time !=None:
+                format = '%a %I:%M %p %b %d, %y'
+                event.date = event.date.strftime(format)
+                event.time = event.time.strftime(format)
 
-        
     sports = Sport.query.all()
     image_urls ={}
+
     for sport in sports:
         image_urls[sport.sport_id] = sport.img_url
 
-    # events_test=db.session.query(Event,User).filter(Event.sport_id == Sport.sport_id).all()
+ 
     # queries all the events for the currect user. 
     if session.get('user') == None:
         joined_events = []
     else:
         joined_events_query = db.session.query(Register.event_id).filter(Register.user_id == session['user']).all()
         joined_events= [value for (value,) in joined_events_query]
-    print("@@@@@@@@@@@@@@@@@@@",joined_events)
+        print("@@@@@@@@@@@@@@@@@@@",joined_events)
     # print('>>>>>>>>', events_test)
-    return render_template("homepage.html", events=events, sports=sports, 
-        joined_events = joined_events,
-        image_urls = image_urls)
+
+    return render_template("homepage.html", events=events, sports = sports, joined_events = joined_events,image_urls = image_urls)
+
+
+
+
+@app.route('/showlog')
+def show_login_form():
+    """show login form"""
+
+    return render_template("login.html")
+
 
 
 @app.route('/register')
@@ -77,8 +75,8 @@ def register_form():
 
     return render_template("registration_form.html")
 
-#user is already loged in. get users info and add it to the event list, 
-#list of users who have registered to that event. 
+
+
 
 @app.route('/signup', methods =["POST"])
 def register_process():
@@ -95,23 +93,20 @@ def register_process():
 
     user = User()
     # if User.query.filter(User.email.in_(email)):
-    if User.query.filter(User.email == email).first():
+    if User.query.filter(User.email == email).first() and User.query.filter(User.password == password).first():
         return redirect('/') 
 
     else:
         user= User(fname = fname, lname = lname, email = email,
-         password = password, bio = bio, photo = photo)
+           password = password, bio = bio, photo = photo)
         db.session.add(user)
         db.session.commit()
         return redirect('/')
 
         
 
-@app.route('/showlog')
-def show_login_form():
-    """show login form"""
 
-    return render_template("login.html")
+
 
 
 @app.route('/login', methods=['POST'])
@@ -120,13 +115,12 @@ def login_form():
     email = request.form.get("email")
     password = request.form.get("password")
 
-    # user = db.session.query(User.email).filter(User.email == email).first()
+# user = db.session.query(User.email).filter(User.email == email).first()
 
     userinfo = db.session.query(User).filter(User.email == email).first()
     if userinfo is None:
         flash("user not found")
         return redirect('/showlog')
-
 
 
     if userinfo.password == password and userinfo.email == email:
@@ -135,16 +129,21 @@ def login_form():
         # print("==>",record.user_id)
         session['user'] = userinfo.user_id
         flash("logged in as %s" % userinfo.user_id)
-        return redirect('/showlog')
+        return redirect('/')
+
     else:
         flash("wrong password or email")
         return redirect('/showlog')
+
+
+
 
 @app.route('/logout')
 def logout():
     """logs out the current user"""
     session.clear()
     return redirect("/showlog")
+
 
 @app.route('/search')
 def search():
@@ -153,22 +152,22 @@ def search():
     search = "%{}%".format(searchKeyword)
     #events = db.session.query(Event).filter(or_(Event.title.ilike(search), Event.description.ilike(search))).all()
     events = []
-    
+
     sports = db.session.query(Sport).filter(Sport.sport_name.ilike(search)).all()
     for sport in sports:
         eventList = db.session.query(Event).filter(Event.sport_id == sport.sport_id).all()
         for event in eventList:
             events.append(event)
-    global searchedEvents
-    searchedEvents = events
-    return index()
+            global searchedEvents
+            searchedEvents = events
+            return index()
+
+
 
 
 @app.route('/event')
 def event_process():
-    """renders information from homepage, 
-    add event form ("save-event-popup") and add it to the db"""
-    print("look this time is real")
+    """ add event form ("save-event-popup") and add it to the db"""
 
     title = request.args.get("title")
     description = request.args.get("des")
@@ -183,10 +182,9 @@ def event_process():
 
     event = Event(title = title, description = description,
         location = location,date = start_date_time, time = end_date_time,
-         user_id=user_id, sport_id=sport_id)
+        user_id=user_id, sport_id=sport_id)
 
     print("\n\n\nevent: \n\n\n",event)
-
     db.session.add(event)
     db.session.commit()
 
@@ -196,11 +194,8 @@ def event_process():
 @app.route('/delete_event')
 def delete_process():
     """deleting events from homepage"""
-    # if the userid is the same as the events.user_id then...
-
+    # if the userid is the same as the events.user_id then show delete
     currentEventId = request.args.get("currentEventId")
-    print(">>>>>>>>>>>>>>>>>>>", currentEventId)
-
     event_record = db.session.query(Event).filter(Event.event_id == currentEventId).first()
 
     if event_record.user_id == session['user']:
@@ -210,7 +205,7 @@ def delete_process():
         db.session.delete(delete_event)
         db.session.commit()
         flash("event deleted")
-       
+
     return redirect('/')
 
 
@@ -218,14 +213,10 @@ def delete_process():
 @app.route('/event_detail')
 def event_detail():
     """redirect event details and number of attendees of each event"""
-    
-    print("TEST HIT!!")
-
     # getting event id from homepage 
     event_id = request.args.get('eventId')
     # counting the total number of registeration for an event.
     registrant_count = db.session.query(Register).filter(Register.event_id ==event_id).count()
-
     event = db.session.query(Event).filter(Event.event_id == event_id).first()
     format = '%a %I:%M %p %b %d, %y'
     event.date = event.date.strftime(format)
@@ -239,22 +230,17 @@ def event_detail():
 
 @app.route('/join')
 def join():
-    """allows user to join or unjoin """
-    
+    """allows user to join or leave event """
     # getting event id from homepage
     event_id = request.args.get('eventId')
-
     user_id = session['user']
-
-    print("@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>",user_id)
-
-
     register = Register(user_id = user_id, event_id = event_id)
     db.session.add(register)
     db.session.commit()
 
     return redirect('/')
-    
+
+
 
 @app.route('/unjoin')
 def unjoin():
@@ -264,13 +250,16 @@ def unjoin():
     register = db.session.query(Register).filter(Register.event_id == event_id).first()
     db.session.delete(register)
     db.session.commit()
-
-    return redirect('/')
     
+    return redirect('/')
+
+
+
+
 if __name__ == "__main__":
-    # We have to set debug=True here, since it has to be True at the
+    # We have to set debug=True here, since it has to be True at 
     # point that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = False
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
