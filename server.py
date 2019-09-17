@@ -140,9 +140,9 @@ def login_form():
 @app.route('/login_alert')
 def login_alert():
     """returns alert cant access if not loged in"""
-    flash("Sign up / Login To Join")
+    alert("Sign up / Login To Join")
     return redirect('/')
-    
+
 
 @app.route('/logout')
 def logout():
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     app.jinja_env.auto_reload = app.debug
 
     connect_to_db(app)
-
+ 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
