@@ -137,7 +137,12 @@ def login_form():
         return redirect('/showlog')
 
 
-
+@app.route('/login_alert')
+def login_alert():
+    """returns alert cant access if not loged in"""
+    flash("Sign up / Login To Join")
+    return redirect('/')
+    
 
 @app.route('/logout')
 def logout():
