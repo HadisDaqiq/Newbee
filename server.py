@@ -37,8 +37,12 @@ def index():
         for event in events:
             if event.date !=None and event.time !=None:
                 format = '%a %I:%M %p %b %d, %y'
-                event.date = event.date.strftime(format)
-                event.time = event.time.strftime(format)
+                try:
+                    event.date = event.date.strftime(format)
+                    event.time = event.time.strftime(format)
+                except:
+                    pass
+                    # FIX MEE!!!!!
 
     sports = Sport.query.all()
     image_urls ={}
@@ -56,7 +60,7 @@ def index():
         print("@@@@@@@@@@@@@@@@@@@",joined_events)
     # print('>>>>>>>>', events_test)
 
-    return render_template("homepage.html", events=events, sports = sports, joined_events = joined_events,image_urls = image_urls)
+    return render_template("homepage.html", events=events, sports = sports, joined_events = joined_events, image_urls = image_urls)
 
 
 
@@ -106,9 +110,6 @@ def register_process():
         
 
 
-
-
-
 @app.route('/login', methods=['POST'])
 def login_form():
     """authenticate user information"""
@@ -154,13 +155,22 @@ def search():
     events = []
 
     sports = db.session.query(Sport).filter(Sport.sport_name.ilike(search)).all()
+    print("#################################", sports)
     for sport in sports:
         eventList = db.session.query(Event).filter(Event.sport_id == sport.sport_id).all()
         for event in eventList:
             events.append(event)
             global searchedEvents
             searchedEvents = events
-            return index()
+
+
+    image_urls ={}
+
+    for sport in sports:
+        image_urls[sport.sport_id] = sport.img_url
+
+    print('>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<s',events)
+    return render_template('search.html', events=events, image_urls=image_urls, sports=sports)
 
 
 
