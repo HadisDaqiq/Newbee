@@ -1,4 +1,4 @@
-# Newbee WebApp Version 1.0 9/16/2019
+# Newbee WebApp Version 1.0 9/16/2019 (Python SQLAlchemy)
 Newbee is a sport networking site. It brings together sports enthusiast to create events and discover, share their experiences.
 
 General Usage Note:
