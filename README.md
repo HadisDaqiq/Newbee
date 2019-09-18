@@ -1,4 +1,4 @@
-# Newbee WebApp Version 1.0 9/16/2019 (Python SQLAlchemy)
+# Newbee WebApp Version 1.0 9/16/2019 (Python SQLAlchemy) DEPLOYED ON AWS HERE: http://52.88.197.116
 Newbee is a sport networking site. It brings together sports enthusiast to create events and discover, share their experiences.
 
 General Usage Note:
