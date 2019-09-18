@@ -34,15 +34,16 @@ def index():
         events = searchedEvents
         #redirect = "homepage.html"
 
-        for event in events:
-            if event.date !=None and event.time !=None:
-                format = '%a %I:%M %p %b %d, %y'
-                try:
-                    event.date = event.date.strftime(format)
-                    event.time = event.time.strftime(format)
-                except:
-                    pass
-                    # FIX MEE!!!!!
+    for event in events:
+        if event.date !=None and event.time !=None:
+            format = '%a %I:%M %p %b %d, %y'
+        
+            event.date = event.date.strftime(format)
+            event.time = event.time.strftime(format)
+            
+            print(">>>>>>>>>>>>>>>>>>SfSFSFSDfs",event.date, event.time)
+
+       
 
     sports = Sport.query.all()
     image_urls ={}
@@ -159,14 +160,25 @@ def search():
     #events = db.session.query(Event).filter(or_(Event.title.ilike(search), Event.description.ilike(search))).all()
     events = []
 
+
+
     sports = db.session.query(Sport).filter(Sport.sport_name.ilike(search)).all()
     print("#################################", sports)
     for sport in sports:
         eventList = db.session.query(Event).filter(Event.sport_id == sport.sport_id).all()
         for event in eventList:
             events.append(event)
-            global searchedEvents
-            searchedEvents = events
+            # global searchedEvents
+            # searchedEvents = events
+
+
+    for event in events:
+        if event.date !=None and event.time !=None:
+            format = '%a %I:%M %p %b %d, %y'
+        
+            event.date = event.date.strftime(format)
+            event.time = event.time.strftime(format)
+            
 
 
     image_urls ={}
