@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{%block head%}
+<title> Homepage</title>
+{%endblock head%} 
+
+{%block content%}
+
+
+<body background="/static/images/background1.jpg">
+
+<div class="container">
+   <div class = "row new_event">
+        <a class="newevent-btn" id = "start-event-btn"> 
+
+                <h3>Search Result</h3>
+        </a>
+    </div>
+
+
+
+    {% for event in events %}
+    <div class="row">
+        <div class="card card-price">
+            <div class="card-img">
+                <img style="width: 100%;" src={{image_urls[event.sport_id]}} alt="Card image cap">
+            </div>
+
+            <!-- event title that will redirect to event page -->
+            <div class="card" ><!--style="width: 18rem;"-->
+                <div class="card-body">
+                    <a class="price" href='/event_detail?eventId={{event.event_id}}'>
+                        <h5 class="event-title"> {{event.title}}</h5>
+                    </a>
+                <div class="lead event-des"> {{event.description}}</div>
+            </div>
+
+                <ul class="details"><!--class="list-group list-group-flush"-->
+                    <li >Location: {{event.location}}</li>
+                    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+                    <li >Start Date/Time: {{event.date}} </li>
+                   <li >End Date/Time: {{event.time}} </li>
+                </ul>
+             
+                        <a class="btn btn-primary btn-lg btn-block" href="/login_alert"class="join">Join </a>
+
+                       
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+
+
+
+<div id = "save-event-popup" class="save-event-popup">
+   
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">New Event Details</div>
+      <div class="panel-body">
+        <form action= "/event" id = "prevent-form-submission-form" 
+        method= "GET">
+
+
+         <div class="row">
+             <div class="col-md-12">
+               <div class="form-group">
+                   <label class="control-label">Sport</label>
+                    <select name ="sport">
+                        {%for sport in sports%}
+                        <option value ="{{sport.sport_id}}">{{sport.sport_name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-12">
+               <div class="form-group">
+                  <label class="control-label">Title</label>
+                  <input type="text" class="form-control" name="title" id="title">
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+             <div class="col-md-12">
+               <div class="form-group">
+                  <label class="control-label">Description</label>
+                  <input type="text" class="form-control" name="des" id="des">
+               </div>
+            </div>
+         </div>
+
+         <div class="row">           
+            <div class='col-md-12'>
+               <div class="form-group">
+                  <label class="control-label">Start Date/Time</label>
+                  <div class='input-group date' id='datetimepicker1'>
+                     <input type='text' class="form-control" name="start_date_time"/>
+                     <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+                  </div>
+               </div>
+            </div>
+        </div>
+
+        <div class="row">           
+            <div class='col-md-12'>
+               <div class="form-group">
+                  <label class="control-label">End Date/Time</label>
+                  <div class='input-group date' id='datetimepicker2'>
+                     <input type='text' class="form-control" name = "end_date_time"/>
+                     <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+                  </div>
+               </div>
+            </div>
+        </div>
+
+
+         <div class="row">
+              <div class="col-md-12">
+               <div class="form-group">
+                  <label class="control-label">Location</label>
+                  <br>
+                  <input id = "location" type= "text" name="location"/>
+               </div>
+            </div>
+         </div>
+
+
+          <div class="row">
+             <div class="col-md-12">
+               <div class="form-group">
+                  <input type="submit" class="btn btn-primary" value="Create">
+               </div>
+            </div>
+          </div>
+
+      </div>
+   </div>
+</div>
+</form>
+
+<script>
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+
+
+
+
+
+        //autocompletes location while creating an event.
+        const locationElem = document.getElementById('location');
+        const autocomplete = new google.maps.places.Autocomplete(locationElem);
+
+        //prevents the default automatic exit at the pop up form of creating event.
+        let stalledForm = document.querySelector("#prevent-form-submission-form");
+
+        stalledForm.addEventListener("click", function (evt) {
+        //it is stoping the event form to look for a click handler outside of its container
+        evt.stopPropagation();
+        
+        });
+
+
+
+    // datetimepicker for date
+    // $('#datetimepicker1').data("DateTimePicker").FUNCTION()
+
+
+    //after clicking on starting event button and making the pop up form appear.
+    $("#start-event-btn").on('click', ()=>{
+        console.log("it is working!")
+        $("#save-event-popup").show()
+    })
+
+    //exit out of popup once it clicks exit or outside of the form.(Gray area)
+    $("#save-event-popup").on('click', ()=>{
+        console.log("Submit btn hit")
+        $("#save-event-popup").hide()
+    })
+
+
+</script>
+
+{%endblock content%}   
+
