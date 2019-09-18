@@ -141,7 +141,8 @@ def login_form():
 @app.route('/login_alert')
 def login_alert():
     """returns alert cant access if not loged in"""
-    alert("Sign up / Login To Join")
+    flash("Sign up / Login To Join")
+
     return redirect('/')
 
 
