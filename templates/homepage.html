@@ -19,7 +19,6 @@
     </div>
 
 
-
     {% for event in events %}
     <div class="row">
         <div class="card card-price">
@@ -131,7 +130,6 @@
             </div>
         </div>
 
-
          <div class="row">
               <div class="col-md-12">
                <div class="form-group">
@@ -141,7 +139,6 @@
                </div>
             </div>
          </div>
-
 
           <div class="row">
              <div class="col-md-12">
@@ -161,9 +158,6 @@
         $('#datetimepicker2').datetimepicker();
 
 
-
-
-
         //autocompletes location while creating an event.
         const locationElem = document.getElementById('location');
         const autocomplete = new google.maps.places.Autocomplete(locationElem);
@@ -176,11 +170,6 @@
         evt.stopPropagation();
         
         });
-
-
-
-    // datetimepicker for date
-    // $('#datetimepicker1').data("DateTimePicker").FUNCTION()
 
 
     //after clicking on starting event button and making the pop up form appear.

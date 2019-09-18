@@ -26,24 +26,16 @@ def index():
     """Homepage"""
     if  session.get('user') == None:
         return redirect('/showlog')
-
     if searchedEvents == None:
         events = Event.query.all()
-        #redirect = "login.html"
     else:
         events = searchedEvents
-        #redirect = "homepage.html"
 
     for event in events:
         if event.date !=None and event.time !=None:
             format = '%a %I:%M %p %b %d, %y'
-        
             event.date = event.date.strftime(format)
             event.time = event.time.strftime(format)
-            
-            print(">>>>>>>>>>>>>>>>>>SfSFSFSDfs",event.date, event.time)
-
-       
 
     sports = Sport.query.all()
     image_urls ={}
@@ -51,17 +43,15 @@ def index():
     for sport in sports:
         image_urls[sport.sport_id] = sport.img_url
 
- 
     # queries all the events for the currect user. 
     if session.get('user') == None:
         joined_events = []
     else:
         joined_events_query = db.session.query(Register.event_id).filter(Register.user_id == session['user']).all()
         joined_events= [value for (value,) in joined_events_query]
-        print("@@@@@@@@@@@@@@@@@@@",joined_events)
-    # print('>>>>>>>>', events_test)
 
-    return render_template("homepage.html", events=events, sports = sports, joined_events = joined_events, image_urls = image_urls)
+    return render_template("homepage.html", events=events, sports = sports, 
+        joined_events = joined_events, image_urls = image_urls)
 
 
 
@@ -69,7 +59,6 @@ def index():
 @app.route('/showlog')
 def show_login_form():
     """show login form"""
-
     return render_template("login.html")
 
 
@@ -77,7 +66,6 @@ def show_login_form():
 @app.route('/register')
 def register_form():
     """Show Registration form """
-
     return render_template("registration_form.html")
 
 
@@ -86,10 +74,8 @@ def register_form():
 @app.route('/signup', methods =["POST"])
 def register_process():
     """Process Registration form"""
-
     email = request.form.get("email")
     password = request.form.get("password")
-
     fname = request.form.get("fname")
     lname = request.form.get("lname")
     bio   = request.form.get("bio")
@@ -117,7 +103,6 @@ def login_form():
     email = request.form.get("email")
     password = request.form.get("password")
 
-# user = db.session.query(User.email).filter(User.email == email).first()
 
     userinfo = db.session.query(User).filter(User.email == email).first()
     if userinfo is None:
@@ -126,11 +111,8 @@ def login_form():
 
 
     if userinfo.password == password and userinfo.email == email:
-
-        print(">>>>>>>>>>>>>>>>>>>>>>",userinfo)
-        # print("==>",record.user_id)
         session['user'] = userinfo.user_id
-        flash("logged in as %s" % userinfo.user_id)
+        flash("logged in as %s" % userinfo.fname)
         return redirect('/')
 
     else:
@@ -142,7 +124,6 @@ def login_form():
 def login_alert():
     """returns alert cant access if not loged in"""
     flash("Sign up / Login To Join")
-
     return redirect('/')
 
 
@@ -158,25 +139,18 @@ def search():
     """logs out the current user"""
     searchKeyword = request.args.get("searchKeyword")
     search = "%{}%".format(searchKeyword)
-    #events = db.session.query(Event).filter(or_(Event.title.ilike(search), Event.description.ilike(search))).all()
     events = []
-
-
-
     sports = db.session.query(Sport).filter(Sport.sport_name.ilike(search)).all()
-    print("#################################", sports)
+
     for sport in sports:
         eventList = db.session.query(Event).filter(Event.sport_id == sport.sport_id).all()
         for event in eventList:
             events.append(event)
-            # global searchedEvents
-            # searchedEvents = events
 
 
     for event in events:
         if event.date !=None and event.time !=None:
             format = '%a %I:%M %p %b %d, %y'
-        
             event.date = event.date.strftime(format)
             event.time = event.time.strftime(format)
             
@@ -187,35 +161,26 @@ def search():
     for sport in sports:
         image_urls[sport.sport_id] = sport.img_url
 
-    print('>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<s',events)
     return render_template('search.html', events=events, image_urls=image_urls, sports=sports)
-
-
 
 
 @app.route('/event')
 def event_process():
     """ add event form ("save-event-popup") and add it to the db"""
-
     title = request.args.get("title")
     description = request.args.get("des")
     location = request.args.get("location")
     start_date_time = request.args.get("start_date_time")
     end_date_time = request.args.get("end_date_time")
-    print("@@@@@@@@@@@@@@@@@@@@@@@",start_date_time, end_date_time)
     user_id = session['user']
     sport_id = request.args.get("sport")
-
-    print("\n\n\SPORT: \n\n\n",sport_id)
 
     event = Event(title = title, description = description,
         location = location,date = start_date_time, time = end_date_time,
         user_id=user_id, sport_id=sport_id)
 
-    print("\n\n\nevent: \n\n\n",event)
     db.session.add(event)
     db.session.commit()
-
     return redirect('/')
 
 
@@ -229,7 +194,6 @@ def delete_process():
     if event_record.user_id == session['user']:
         # delete event that has the currentEventId
         delete_event = db.session.query(Event).filter(Event.event_id == currentEventId).first()
-        print(delete_event)
         db.session.delete(delete_event)
         db.session.commit()
         flash("event deleted")
@@ -250,7 +214,6 @@ def event_detail():
     event.date = event.date.strftime(format)
     event.time = event.time.strftime(format)
     location = event.location
-
     return render_template("event.html", event= event, registrant_count=registrant_count)
 
 
@@ -278,7 +241,6 @@ def unjoin():
     register = db.session.query(Register).filter(Register.event_id == event_id).first()
     db.session.delete(register)
     db.session.commit()
-    
     return redirect('/')
 
 
