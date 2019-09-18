@@ -1,5 +1,6 @@
 env/
 .DS_Store
 secrets.sh
+__pycache__/
 
 
