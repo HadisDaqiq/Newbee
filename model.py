@@ -95,6 +95,25 @@ class Register(db.Model):
             self.register_id
             )
 
+
+
+# def example_data():
+#     """Create some sample data."""
+
+#     # In case this is run more than once, empty out existing data
+#     #User.query.delete()
+
+#     # Add sample employees and departments
+#     sara = User(fname='sara', lname='Daqiq', email='sadaqiq@gmail.com', 
+#         password='hadis')
+
+
+#     db.session.add_all([sara])
+#     db.session.commit()
+
+
+
+
 #Helper functions
 
 def init_app():
@@ -117,11 +136,15 @@ def connect_to_db(app):
     db.init_app(app)
 
 
+
+
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
     init_app()
+
+
 
 
 
